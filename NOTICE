@@ -1,8 +1,12 @@
-This product includes project-logbook, a LaTeX class developed by
-Artur Palha at the Netherlands eScience Center.
+project-logbook
+Copyright 2022 The Netherlands eScience Center
 
-This LaTeX class derives from and extends the original code research-logbook
-by Jose Javier, available in github JJGO/research-logbook, with original license:
+This product includes software developped at The Netherlands eScience Center
+(https://www.esciencecenter.nl).
+
+This software derives from and extends the original code research-logbook
+by Jose Javier, available in the github repository JJGO/research-logbook,
+with original license:
 
 The MIT License (MIT)
 
