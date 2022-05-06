@@ -1,10 +1,10 @@
 # Research Logbook
 
 ## Descrition
-A simple yet powerful LaTeX class for creating a project notebook with modular
-components and a wide variety of tools.
+A LaTeX class for creating a project notebook with several options to format
+your logbook.
 
-This class can be use as a notebook/logbook for any type of project like activity,
+This class can be used as a notebook/logbook for any type of project like activity,
 e.g., research, experiments, etc.
 
 ## Repository structure
