@@ -1,21 +1,15 @@
-\documentclass[11pt,letterpaper]{article}
-\newif\ifLISTINGS
-\newif\ifALGORITHMS
-\newif\ifTiKZ
+\documentclass{project-logbook}
 
 %%%%% USER CONFIGURATION %%%%%
 \newcommand{\userName}{Jose Javier Gonzalez}
 \newcommand{\userId}{JJ}
 \newcommand{\institution}{University of Michigan}
-% Toggles, set to false if not needed since it will speed up the compilation
-\LISTINGStrue   % LISTINGS toggle
-\ALGORITHMStrue % ALGORITHMS toggle
-\TiKZtrue       % TiKZ toggle
 
-\input{researchdiary_config}
+
+%\input{projectdiary_config}
 \begin{document}
 \title{CinC-2016 Logbook}
-\univlogo
+\institutionlogo
 {\Huge Project Title}\\[5mm]
 
 \textit{N.B.: The following is a template research diary written by \userName and intends to display the numerous capabilities of LaTeX to successfully register and track research projects. It is mostly oriented to Computer Science research in general and  Machine Learning projects in particular but the template can be used for any kind of project.}
@@ -23,6 +17,9 @@
 \vspace{1em}
 {\large \underline{\textbf{\uppercase{PROJECT SUBTITLE}}}}
 
+%\maketitle
+
+%\chapter{The name of my chapter}
 \section*{Introduction} % (fold)
 \label{sec:introduction}
 \begin{tip}
@@ -32,7 +29,7 @@ In this section one should introduce what the research is about, in a high level
 During the cardiac cycle, the heart firstly generates the electrical activity and then the electrical activity causes atrial and ventricular contractions. This in turn forces blood between the chambers of the heart and around the body. The opening and closure of the heart valves is associated with accelerations-decelerations of blood, giving rise to vibrations of the entire cardiac structure (the heart sounds and murmurs). These vibrations are audible at the chest wall, and listening for specific heart sounds can give an indication of the health of the heart. The phonocardiogram (PCG) is the graphical representation of a heart sound recording. Figure \ref{fig:PCG_ECG} illustrates a short section of a PCG recording.
 
 \begin{figure}[h]
-    \includegraphics[width=0.6\textwidth]{Images/PCG_ECG}
+    \includegraphics[width=0.6\textwidth]{figures/PCG_ECG}
     \centering
     \caption{A PCG (center tracing), with simultaneously recorded ECG (lower tracing) and the four states of the PCG recording; S1, Systole, S2 and Diastole.}
     \label{fig:PCG_ECG}
@@ -268,7 +265,7 @@ However, sometimes you will need more complicated diagrams (or maybe you do not 
 \end{tip}
 
 \begin{figure}[h]
-    \includegraphics[width=0.9\textwidth]{Images/LSTM}
+    \includegraphics[width=0.9\textwidth]{figures/LSTM}
     \centering
     \caption{Gate Recurrent Unit in a Long Short Term Memory Neural Netwok (GRU-LSTM). \\ \emph{Credit to \url{https://colah.github.io/posts/2015-08-Understanding-LSTMs/}}}
     \label{fig:LSTM}
@@ -292,26 +289,26 @@ In general the best way to visualize your results will be some figures, I recomm
     \centering
     \begin{subfigure}{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Images/accuracy_128.png}
+        \includegraphics[width=\textwidth]{figures/accuracy_128.png}
         \caption{Average accuracies for 128-bit key}
     \end{subfigure}
     \hspace{.35cm}
     \begin{subfigure}{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Images/accuracy_192.png}
+        \includegraphics[width=\textwidth]{figures/accuracy_192.png}
         \caption{Average accuracies for 192-bit key}
     \end{subfigure}%
 
     \vspace{1cm}
     \begin{subfigure}{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Images/accuracy_256.png}
+        \includegraphics[width=\textwidth]{figures/accuracy_256.png}
         \caption{Average accuracies for 256-bit key}
     \end{subfigure}
     \hspace{.35cm}
     \begin{subfigure}{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Images/times.png}
+        \includegraphics[width=\textwidth]{figures/times.png}
         \caption{Average Runtimes for various mask sizes}
     \end{subfigure}
     \vspace{.25cm}
