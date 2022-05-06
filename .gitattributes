@@ -1,0 +1,6 @@
+# Treat figure files as binary to avoid breaking them
+
+*.pdf
+*.png
+*.jpg
+*.svg
