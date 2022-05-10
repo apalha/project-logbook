@@ -6,13 +6,19 @@
 \newcommand{\institution}{University of Michigan}
 
 
-%\input{projectdiary_config}
+\CreateAuthor{Artur Palha}{apalha}{eScience Center}
+\CreateContributor{hp}{Harry Potter}{hp}{Hoggwarts Institute of Technology}
+\CreateContributor{jdoe}{Jane Doe}{jdoe}{Center for Advanced Studies in Awesome Research}
+\CreateContributor{hs}{Hari Seldon}{hs}{Foundation Institute of Advanced Studies}
+
+\SetProjectName{The very fancy project}
+
 \begin{document}
 \title{CinC-2016 Logbook}
-\institutionlogo
+\institutionlogo{figures/institution-logo.pdf}
 {\Huge Project Title}\\[5mm]
 
-\textit{N.B.: The following is a template research diary written by \userName and intends to display the numerous capabilities of LaTeX to successfully register and track research projects. It is mostly oriented to Computer Science research in general and  Machine Learning projects in particular but the template can be used for any kind of project.}
+\textit{N.B.: The following is a template research diary written by \userName and intends to display the numerous capabilities of LaTeX to successfully register and track research projects. It is mostly oriented to Computer Science research in general and  Machine Learning projects in particular but the template can be used for any kind of project. Author name: \AuthorName, Author institution: \AuthorInstitution, Author id: \Authorid. }
 
 \vspace{1em}
 {\large \underline{\textbf{\uppercase{PROJECT SUBTITLE}}}}
@@ -27,6 +33,8 @@ In this section one should introduce what the research is about, in a high level
 \end{tip}
 
 During the cardiac cycle, the heart firstly generates the electrical activity and then the electrical activity causes atrial and ventricular contractions. This in turn forces blood between the chambers of the heart and around the body. The opening and closure of the heart valves is associated with accelerations-decelerations of blood, giving rise to vibrations of the entire cardiac structure (the heart sounds and murmurs). These vibrations are audible at the chest wall, and listening for specific heart sounds can give an indication of the health of the heart. The phonocardiogram (PCG) is the graphical representation of a heart sound recording. Figure \ref{fig:PCG_ECG} illustrates a short section of a PCG recording.
+
+Then all the contributors: {\GetAllContributorKeys{Name: \ContributorName{#1} }
 
 \begin{figure}[h]
     \includegraphics[width=0.6\textwidth]{figures/PCG_ECG}

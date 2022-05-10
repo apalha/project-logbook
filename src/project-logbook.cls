@@ -15,6 +15,8 @@
 \LoadClass[11pt, a4paper]{article}
 
 %% Dependencies
+\RequirePackage{xparse}  % Required for advanced commands
+\RequirePackage{titlesec}  % Fancy sections
 \RequirePackage{xcolor}
 \RequirePackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
 \RequirePackage[utf8]{inputenc} % For Spanish characters
@@ -86,10 +88,74 @@
 %\usepackage{fix-cm} % Computer-Modern at arbitrarysizes
 %\usepackage{eurosym} % Eurosymbol
 
+%% Contributors definition
+\ExplSyntaxOn
+
+	% Declare the contributors property
+	\prop_new:N \g_contributors_prop
+	\prop_new:N \g_contributor_keys_prop
+	
+	% Define the contributors property id for easy iteration
+	\NewDocumentCommand{\CreateContributorKeys}{mm} {
+  		\prop_gput:Nnn \g_contributor_keys_prop {#1}{#2}
+ 	}
+	
+	% Define the contributors property
+	\NewDocumentCommand{\CreateContributor}{mmmm} {
+  		\prop_gput:Nnn \g_contributors_prop { #1-name } { #2 }
+  		\prop_gput:Nnn \g_contributors_prop { #1-id } { #3 }
+		\prop_gput:Nnn \g_contributors_prop { #1-institution } { #4 }
+		\CreateContributorKeys{#1}{#1}
+ 	}
+
+	% Create a quick access LaTeX2e accessible command to contributor's name
+	\NewDocumentCommand{\ContributorName}{m}{
+ 	 	\prop_item:Nn \g_contributors_prop { #1-name }
+ 	}
+	
+	% Create a quick access LaTeX2e accessible command to contributor's id
+	\NewDocumentCommand{\Contributorid}{m}{
+  		\prop_item:Nn \g_contributors_prop { #1-id }
+ 	}
+	
+	% Create a quick access LaTeX2e accessible command to contributor's institution
+	\NewDocumentCommand{\ContributorInstitution}{m}{
+  		\prop_item:Nn \g_contributors_prop { #1-institution }
+ 	}
+	
+	\NewDocumentCommand{\PrintContributorsList}{}{
+		\begin{enumerate}
+		\prop_map_inline:Nn \g_contributor_keys_prop {
+			\item Key: ##1,\, Name: \ContributorName{##1}, id: \Contributorid{##1}, Institution: \ContributorInstitution{##1}
+		}
+		\end{enumerate}
+	}
+	
+	\NewDocumentCommand{\GetAllContributorKeys}{m}{
+        		\prop_map_inline:Nn \g_contributor_keys_prop {
+           		#1
+        		}
+    	}
+	
+\ExplSyntaxOff
 
 
+%% Author definition
+\NewDocumentCommand{\CreateAuthor}{mmm}{
+	\edef\AuthorName{#1}
+	\edef\Authorid{#2}
+	\edef\AuthorInstitution{#3}
+	\CreateContributor{author}{#1}{#2}{#3}
+}
+
+% Start with the default author, the user needs to change it
+\CreateAuthor{John Doe}{JD}{Institute of Magnificent Research}
 
 
+%% Project name
+\NewDocumentCommand{\SetProjectName}{m}{
+	\edef\ProjectName{#1}
+}
 
 %% Format page
 \pagestyle{fancy}
@@ -100,22 +166,25 @@
 
 %% Header / Footer 
 \rhead{\textit{Last modified: \today}}
-\chead{\textsc{Project Logbook}}
-\lhead{\textsc{Username}}
+\chead{\textsc{\ProjectName~Logbook}}
+\lhead{\textsc{\AuthorName}}
 \rfoot{}
 \cfoot{\color{gray} \textsc{\thepage~/~\pageref*{LastPage}}}
 \lfoot{}
 
 %% Institution Logo
-\newcommand{\institutionlogo}{%
+\newcommand{\institutionlogo}[1]{%
 	\begin{tikzpicture}[remember picture,overlay]
     		\node[anchor=north east,yshift=-2.0cm,xshift=-2cm]%
         			at (current page.north east)
-        		{\includegraphics[width=0.2\textwidth]{figures/institution-logo.pdf}};
+        		{\ifthenelse{\equal{#1}{}}{\includegraphics[height=1.0cm]{example-image-a}}{\includegraphics[height=1.0cm]{#1}}};
 	\end{tikzpicture}
 }
 
-\renewcommand{\thesection}{\Roman{section}}
+%\let\stdsection\section
+%\renewcommand\section{\newpage\stdsection}
+\newcommand{\sectionbreak}{\clearpage}
+%\renewcommand{\thesection}{\Roman{section}}
 % \renewcommand{\thesubsection}{\thesection.\Roman{subsection}}
 
 %%%%%%%%%%%%
