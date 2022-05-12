@@ -88,7 +88,32 @@
 %\usepackage{fix-cm} % Computer-Modern at arbitrarysizes
 %\usepackage{eurosym} % Eurosymbol
 
+
+%% ========================================================================
+%% Author and Contributors information 
+
 %% Contributors definition
+
+% Contributors are any person that has contributed to the editing of the document. The maintainer is
+% by default a contributor, with key maintainer.
+%
+% Contributors are stored in two properties list:
+% 	\g_contributor_keys_prop
+% 	\g_contributors_prop
+%
+% The first one stores the keys for each of the contributors, i.e., the internal name for each contributor that has
+% been added.
+%
+% The second one contains the two-level property lists containing the name, id, and institution affiliation for each
+% of the contributors. The way to associate these three attributes to each contributor is done by using the following 
+% key format: 
+%	<key>-name
+%	<key>-id
+%	<key>-institution
+% To access the data for each of the  contributors, where <key> is the key of the contributor. Because of this format
+% if we loop over this property list, we will get it in as a flat list. To circumvent this, we need the first property list containing
+% only the keys. We can then loop over the property list containing the keys and use each key to access the attributes of
+% each contributor.
 \ExplSyntaxOn
 
 	% Declare the contributors property
@@ -100,7 +125,9 @@
   		\prop_gput:Nnn \g_contributor_keys_prop {#1}{#2}
  	}
 	
-	% Define the contributors property
+	% Defines the command to add a contributor
+	% Usage:
+	%	\CreateContributor{key}{name}{id}{institution}
 	\NewDocumentCommand{\CreateContributor}{mmmm} {
   		\prop_gput:Nnn \g_contributors_prop { #1-name } { #2 }
   		\prop_gput:Nnn \g_contributors_prop { #1-id } { #3 }
@@ -108,29 +135,33 @@
 		\CreateContributorKeys{#1}{#1}
  	}
 
-	% Create a quick access LaTeX2e accessible command to contributor's name
+	% Creates a quick access LaTeX2e accessible command to contributor's name
+	% associated to a key
+	% Usage:
+	%	\ContributorName{key}
 	\NewDocumentCommand{\ContributorName}{m}{
- 	 	\prop_item:Nn \g_contributors_prop { #1-name }
+ 	 	\prop_item:Nn \g_contributors_prop {#1-name}
  	}
 	
-	% Create a quick access LaTeX2e accessible command to contributor's id
+	% Creates a quick access LaTeX2e accessible command to contributor's id
+	% associated to key
+	% Usage:
+	% 	\Controbutorid{key}
 	\NewDocumentCommand{\Contributorid}{m}{
-  		\prop_item:Nn \g_contributors_prop { #1-id }
+  		\prop_item:Nn \g_contributors_prop {#1-id}
  	}
 	
-	% Create a quick access LaTeX2e accessible command to contributor's institution
+	% Creates a quick access LaTeX2e accessible command to contributor's institution
+	% associated to key
+	% Usage:
+	% 	\ControbutorInstitution{key}
 	\NewDocumentCommand{\ContributorInstitution}{m}{
-  		\prop_item:Nn \g_contributors_prop { #1-institution }
+  		\prop_item:Nn \g_contributors_prop {#1-institution}
  	}
 	
-	\NewDocumentCommand{\PrintContributorsList}{}{
-		\begin{enumerate}
-		\prop_map_inline:Nn \g_contributor_keys_prop {
-			\item Key: ##1,\, Name: \ContributorName{##1}, id: \Contributorid{##1}, Institution: \ContributorInstitution{##1}
-		}
-		\end{enumerate}
-	}
-	
+	% Creates an iterable function that allows looping over all contributors list.
+	% This enables constructing blocks with all contributors with operations applied to them.
+	% See \PrintContributorsList for an example
 	\NewDocumentCommand{\GetAllContributorKeys}{m}{
         		\prop_map_inline:Nn \g_contributor_keys_prop {
            		#1
@@ -139,23 +170,39 @@
 	
 \ExplSyntaxOff
 
+	% Toy function to print the information of all contributors as an itemized list
+	% Usage:
+	%	\PrintContributorsList
+	\NewDocumentCommand{\PrintContributorsList}{}{
+		\begin{enumerate}
+			\GetAllContributorKeys{\item Key: ##1,\, Name: \ContributorName{##1}, id: \Contributorid{##1}, Institution: \ContributorInstitution{##1} }
+		\end{enumerate}
+	}
 
-%% Author definition
-\NewDocumentCommand{\CreateAuthor}{mmm}{
-	\edef\AuthorName{#1}
-	\edef\Authorid{#2}
-	\edef\AuthorInstitution{#3}
-	\CreateContributor{author}{#1}{#2}{#3}
+
+%% Maintainer definition
+% Defines the maintainer, providing the same information as for a contributor. The maintainer is the one responsible for
+% the document. By default a maintainer is a contributor and therefore, once the maintainer is created, a contributor
+% with key maintainer is created, containing all the data of the maintainer.
+
+% Creates a function to define the maintainer
+% Note that no key is required to create the maintainer (as is needed for a contributor) because the
+% maintainer will automatically be assigned the key maintainer.
+% Usage:
+%	\CreateMaintainer{name}{id}{institution}
+\NewDocumentCommand{\CreateMaintainer}{mmm}{
+	\edef\MaintainerName{#1}
+	\edef\Maintainerid{#2}
+	\edef\MaintainerInstitution{#3}
+	\CreateContributor{maintainer}{#1}{#2}{#3}
 }
 
 % Start with the default author, the user needs to change it
-\CreateAuthor{John Doe}{JD}{Institute of Magnificent Research}
+\CreateMaintainer{John Doe}{JD}{Institute of Magnificent Research}
 
 
-%% Project name
-\NewDocumentCommand{\SetProjectName}{m}{
-	\edef\ProjectName{#1}
-}
+%% ========================================================================
+%% Project logbook cover: Project title, subtile, description, headers
 
 %% Format page
 \pagestyle{fancy}
@@ -163,29 +210,159 @@
 \setlength\parindent{0in}
 \setlength\parskip{0.1in}
 
-
 %% Header / Footer 
 \rhead{\textit{Last modified: \today}}
-\chead{\textsc{\ProjectName~Logbook}}
-\lhead{\textsc{\AuthorName}}
+\chead{\textsc{\ProjectHeaderName~Logbook}}
+\lhead{\textsc{\MaintainerName}}
 \rfoot{}
 \cfoot{\color{gray} \textsc{\thepage~/~\pageref*{LastPage}}}
 \lfoot{}
 
-%% Institution Logo
-\newcommand{\institutionlogo}[1]{%
+% We define the project name (a longer name) and a (shorter) name for the header, it is also possible
+% to define a subtitle for the project
+
+% Sets the name to appear in the header of the document
+% Usage:
+%	\SetProjectHeaderName{A short project name}
+\NewDocumentCommand{\SetProjectHeaderName}{m}{
+	\edef\ProjectHeaderName{#1}
+}
+
+% The default header name
+\SetProjectHeaderName{The very fancy project}
+
+% Sets the main tittle of the project
+% Usage:
+%	\SetProjectTitle{The longer name of the project containing more information}
+\NewDocumentCommand{\SetProjectTitle}{m}{
+	\edef\ProjectTitle{#1}
+}
+% The default title
+\SetProjectTitle{The title of the project}
+
+% Sets the subtitle of the project
+% Usage:
+% 	\SetProjectSubtittle{The subtitle of the project to appear below the title}
+\NewDocumentCommand{\SetProjectSubtitle}{m}{
+	\edef\ProjectSubtitle{#1}
+}
+% The default subtitle
+\SetProjectSubtitle{The subtitle of the project}
+
+%% Sets the institution's logo (typically associated to the maintainer)
+% The logo should be a pdf or png file, the size of the logo is set by constraining the height of the
+% logo to 1cm, this works well for horizontal logos but not so well for tall logos, need to look into this
+% further
+% Usage:
+%	\SetInstitutionLogo{/a/path/to/a/figure}
+\NewDocumentCommand{\SetInstitutionLogo}{m}{
+	\edef\InstitutionLogo{#1}
+}
+
+% By default the logo is set to empty, which will result in an automatically generated LaTeX example figure. If you 
+% wish to have no logo, use a white figure
+\SetInstitutionLogo{}
+
+% Helper function to add the institution logo, not to be used in the document, only for internal use in the class
+% Actually uses the logo definition (the file path) and places the figure on the top corner of the page (the cover page)
+% Usage:
+%	\AddInstitutionLogo
+\NewDocumentCommand{\AddInstitutionLogo}{}{%
 	\begin{tikzpicture}[remember picture,overlay]
     		\node[anchor=north east,yshift=-2.0cm,xshift=-2cm]%
         			at (current page.north east)
-        		{\ifthenelse{\equal{#1}{}}{\includegraphics[height=1.0cm]{example-image-a}}{\includegraphics[height=1.0cm]{#1}}};
+        		{\ifthenelse{\equal{\InstitutionLogo}{}}{\includegraphics[height=1.0cm]{example-image-a}}{\includegraphics[height=1.0cm]{\InstitutionLogo}}};
 	\end{tikzpicture}
 }
 
-%\let\stdsection\section
-%\renewcommand\section{\newpage\stdsection}
+% Helper function to add the project title to the cover page
+% Usage:
+%	\AddProjectTitle
+\NewDocumentCommand{\AddProjectTitle}{}{
+	\begin{minipage}[t][9cm][t]{\textwidth}
+		\vspace{6cm}
+		\begin{center}
+			{\Huge\textbf{\ProjectTitle}} 
+			\\ \vspace{0.5cm}
+			{\large{\textbf{\ProjectSubtitle}}}
+		\end{center}
+	\end{minipage}
+}
+
+% Set the project summary to appear on the front page
+% Usage:
+% 	\SetProjectSummary{The summary of the project should briefly describe the project in.a couple of lines, not more.}
+\NewDocumentCommand{\SetProjectSummary}{m}{
+		\edef\ProjectSummary{#1} 
+}
+
+% By default add gibberish
+\SetProjectSummary{Your summary of the project should go here, briefly describe it, without spending more than two lines on it.}
+
+% Helper function to add the project summary to the cover page
+% Usage:
+%	\AddSummary
+\NewDocumentCommand{\AddSummary}{}{
+	\begin{minipage}[t]{\textwidth}
+		\textit{N.B.: \ProjectSummary} 
+		\newline
+		\vspace{2.5cm}
+	\end{minipage}
+}
+
+% Helper function to add the information of the maintainer to the cover page
+% Usage:
+%	\AddMaintainer
+\NewDocumentCommand{\AddMaintainer}{}{
+	\begin{minipage}[t][1.5cm][t]{\textwidth}
+		\noindent Maintainer: \newline
+		\hspace*{1.0cm}
+		\begin{tabular}{lll}
+			\!\!\MaintainerName & (\textit{\Maintainerid}), & \MaintainerInstitution
+		\end{tabular}
+	\end{minipage}
+}
+
+% Helper function to add the information of all the contributors to the cover page
+% Usage:
+%	\AddContributorsList
+\ExplSyntaxOn
+\NewDocumentCommand{\AddContributorsList}{}{
+	\begin{minipage}[t]{\textwidth}
+		\noindent Contributors: \newline
+	\end{minipage}
+	\vskip-.5cm
+	\begin{minipage}[t]{\textwidth}
+		\hspace*{1.0cm} 
+		\begin{tabular}{lll}
+			\prop_map_inline:Nn \g_contributor_keys_prop {
+           			\ContributorName{##1} & (\textit{\Contributorid{##1}}), & \ContributorInstitution{##1} \\
+       			}
+		\end{tabular}
+	\end{minipage}
+}
+\ExplSyntaxOff
+
+
+% Creates the front page. Adds the logo, title, subtitle, maintainer info, contributors info, and summary to the 
+% cover page
+% Usage:
+%	\MakeFrontPage
+\NewDocumentCommand{\MakeFrontPage}{}{
+	\AddInstitutionLogo
+	\AddProjectTitle
+	\newline
+	\AddSummary
+	\newline
+	\AddMaintainer
+	\newline
+	\AddContributorsList
+}
+
+
+%% Section formating
+% Add a new page for every new section
 \newcommand{\sectionbreak}{\clearpage}
-%\renewcommand{\thesection}{\Roman{section}}
-% \renewcommand{\thesubsection}{\thesection.\Roman{subsection}}
 
 %%%%%%%%%%%%
 % CAPTIONS %
@@ -285,7 +462,7 @@
     numbersep=8pt,
     numberfirstline = false,
     %
-    breakatwhitespace=false,         % sets if automatic breaks should only happenat whitespace
+    breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
     breaklines=true,                 % sets automatic line breaking
     captionpos=t,                    % sets the caption-position to bottom
     escapeinside={<@}{@>},            % if you want to add LaTeX within your code
@@ -364,8 +541,8 @@
 % TODO COMMANDS %
 %%%%%%%%%%%%%%%%%
 
-\newcommand{\hightodo}[1]{\todo[inline,backgroundcolor=red!90!yellow!80!white]{\textbf{\userId}: #1}}
-\newcommand{\lowtodo}[1]{\todo[inline,backgroundcolor=blue!30!white]{\textbf{\userId}: #1}}
+\newcommand{\hightodo}[2]{\todo[inline,backgroundcolor=red!90!yellow!80!white]{\textbf{#1}: #2}}
+\newcommand{\lowtodo}[2]{\todo[inline,backgroundcolor=blue!30!white]{\textbf{#1}: #2}}
 
 \newtcolorbox{tip}{colback=blue!5!white,colframe=blue!75!black}
 \newtcolorbox{tipt}[1]{colback=blue!5!white,colframe=blue!75!black,fonttitle=\bfseries,title=#1}

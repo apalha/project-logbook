@@ -1,35 +1,30 @@
 \documentclass{project-logbook}
 
-%%%%% USER CONFIGURATION %%%%%
-\newcommand{\userName}{Jose Javier Gonzalez}
-\newcommand{\userId}{JJ}
-\newcommand{\institution}{University of Michigan}
+
+\CreateMaintainer{Maya Toitovna}{mtoitovna}{Mars Center for Outstanding Developments}
+\CreateContributor{fc}{Frank Chalmers}{fchalmers}{Mars Institute of Technology}
+\CreateContributor{ac}{Ann Clayborne}{aclayborne}{Mars Laboratory for Great Achievements}
+\CreateContributor{ab}{Arkady Bogdanov}{abogdanov}{Mars University of Fundamental Research}
 
 
-\CreateAuthor{Artur Palha}{apalha}{eScience Center}
-\CreateContributor{hp}{Harry Potter}{hp}{Hoggwarts Institute of Technology}
-\CreateContributor{jdoe}{Jane Doe}{jdoe}{Center for Advanced Studies in Awesome Research}
-\CreateContributor{hs}{Hari Seldon}{hs}{Foundation Institute of Advanced Studies}
+\SetProjectHeaderName{The very fancy project}
+\SetProjectTitle{The title of the project}
+\SetProjectSubtitle{The subtitle of the project}
 
-\SetProjectName{The very fancy project}
+\SetInstitutionLogo{figures/institution-logo.pdf}
+\SetProjectSummary{Here you can add a brief summary of your project such that someone can quickly see what it is about, do not spend more than two lines on it.}
 
 \begin{document}
 \title{CinC-2016 Logbook}
-\institutionlogo{figures/institution-logo.pdf}
-{\Huge Project Title}\\[5mm]
 
-\textit{N.B.: The following is a template research diary written by \userName and intends to display the numerous capabilities of LaTeX to successfully register and track research projects. It is mostly oriented to Computer Science research in general and  Machine Learning projects in particular but the template can be used for any kind of project. Author name: \AuthorName, Author institution: \AuthorInstitution, Author id: \Authorid. }
+\MakeFrontPage
 
-\vspace{1em}
-{\large \underline{\textbf{\uppercase{PROJECT SUBTITLE}}}}
 
-%\maketitle
-
-%\chapter{The name of my chapter}
 \section*{Introduction} % (fold)
 \label{sec:introduction}
+\PrintContributorsList
 \begin{tip}
-In this section one should introduce what the research is about, in a high level so you can do a simple explanation of the topic and the research challenges that you are facing.
+In this section one should introduce what the research is abLout, in a high level so you can do a simple explanation of the topic and the research challenges that you are facing.
 \end{tip}
 
 During the cardiac cycle, the heart firstly generates the electrical activity and then the electrical activity causes atrial and ventricular contractions. This in turn forces blood between the chambers of the heart and around the body. The opening and closure of the heart valves is associated with accelerations-decelerations of blood, giving rise to vibrations of the entire cardiac structure (the heart sounds and murmurs). These vibrations are audible at the chest wall, and listening for specific heart sounds can give an indication of the health of the heart. The phonocardiogram (PCG) is the graphical representation of a heart sound recording. Figure \ref{fig:PCG_ECG} illustrates a short section of a PCG recording.
@@ -134,9 +129,9 @@ You will often have pending tasks that you need to track. This research journal 
 Note: define your \texttt{userId} in the preamble
 \end{tipt}
 
-\hightodo{ 2016-05-23 : Compute the error between mode-downsampled segmentation state vectors at 1000 Hz and state vectors computed at 400 Hz. This needs to be performed to check that the segmentation algorithm is not overfitted to 1000Hz. If error is significant, retrain segmentation at 400 Hz or use 1000 just for segmentation (if Matlab 2016a improvements are true there should be no problem)}
+\hightodo{\Contributorid{hs}}{ 2016-05-23 : Compute the error between mode-downsampled segmentation state vectors at 1000 Hz and state vectors computed at 400 Hz. This needs to be performed to check that the segmentation algorithm is not overfitted to 1000Hz. If error is significant, retrain segmentation at 400 Hz or use 1000 just for segmentation (if Matlab 2016a improvements are true there should be no problem)}
 
-\lowtodo{ 2016-05-27 : Do DRYRUN with new Matlab 2016a and check the segmentation quota }
+\lowtodo{\Contributorid{hp}}{ 2016-05-27 : Do DRYRUN with new Matlab 2016a and check the segmentation quota }
 
 % subsection preprocessing (end)
 
@@ -150,9 +145,7 @@ Note: define your \texttt{userId} in the preamble
 
 \begin{tip}
 Sometimes the most straightforward way to explain a procedure is just to give it in a algorithmic format, it takes a little time but it will force you to go thorugh the steps and you will most likely be able to reuse it on you paper.
-
-Note: You will need to have \texttt{\textbackslash
-ALGORITHMStrue} in the preamble to enable algorithms
+Note: You will need to have \texttt{\textbackslash ALGORITHMStrue} in the preamble to enable algorithms
 \end{tip}
 
 \begin{algorithm}
@@ -185,23 +178,23 @@ LISTINGStrue} in the preamble.
 
 \begin{lstlisting}[style=Python]
 def DTW_distance(s1, s2):
-    """
-    Function to compute the Dynamic Time Warping in Python between two signals
-    """
-    DTW={}
+	"""
+	Function to compute the Dynamic Time Warping in Python between two signals
+	"""
+	DTW={}
 
-    for i in range(len(s1)):
-        DTW[(i, -1)] = float('inf') # By default <@\color{pgreen} $\infty$@>
-    for i in range(len(s2)):
-        DTW[(-1, i)] = float('inf') # By default <@\color{pgreen} $\infty$@>
-    DTW[(-1, -1)] = 0
+	for i in range(len(s1)):
+		DTW[(i, -1)] = float('inf') # By default <@\color{pgreen} $\infty$@>
+	for i in range(len(s2)):
+		DTW[(-1, i)] = float('inf') # By default <@\color{pgreen} $\infty$@>
+	DTW[(-1, -1)] = 0
 
-    for i in range(len(s1)):
-        for j in range(len(s2)):
-            dist= (s1[i]-s2[j])**2
-            <|DTW[(i, j)] = dist + min(DTW[(i-1, j)],DTW[(i, j-1)], DTW[(i-1, j-1)])|>
+	for i in range(len(s1)):
+		for j in range(len(s2)):
+			dist= (s1[i]-s2[j])**2
+			<|DTW[(i, j)] = dist + min(DTW[(i-1, j)],DTW[(i, j-1)], DTW[(i-1, j-1)])|>
 
-    return sqrt(DTW[len(s1)-1, len(s2)-1])
+	return sqrt(DTW[len(s1)-1, len(s2)-1])
 \end{lstlisting}
 
 % subsection code (end)
