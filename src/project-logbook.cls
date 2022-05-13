@@ -15,11 +15,12 @@
 \LoadClass[11pt, a4paper]{article}
 
 %% Dependencies
+\RequirePackage{lmodern}
 \RequirePackage{xparse}  % Required for advanced commands
 \RequirePackage{titlesec}  % Fancy sections
 \RequirePackage{xcolor}
 \RequirePackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
-\RequirePackage[utf8]{inputenc} % For Spanish characters
+%\RequirePackage[utf8]{inputenc} % For Spanish characters
 \RequirePackage[USenglish]{babel} % USEnglish localisation
 
 % =========== General Formatting =============
@@ -52,7 +53,7 @@
 % =============== Figures ===============
 \RequirePackage{float} % Float features
 \RequirePackage{graphicx} % Image insertion.
-\RequirePackage{caption,subcaption} % For custom caption environments
+
 \RequirePackage{wrapfig} % Al­lows fig­ures or ta­bles to have text wrapped around them
 \RequirePackage{tikz} % Diagram and figure creation and rendering
 \RequirePackage[americanvoltages, europeancurrents, americanresistors, cuteinductors]{circuitikz} % Circuit Graphics
@@ -67,7 +68,7 @@
 
 % % =============== Listings ============
 \RequirePackage{listings} % Main package for inserting code
-\RequirePackage[scaled]{beramono} % For using the beramono font
+%\RequirePackage[scaled]{beramono} % For using the beramono font
 
 % % =============== Algorithms ===============
 \RequirePackage{algorithm} % Allows for algorithm description
@@ -76,6 +77,7 @@
 % =============== Other ===============
 \RequirePackage{datetime} % Date-Time formatting
 \RequirePackage{ulem} % For strikethrough text \st{}
+\setlength {\marginparwidth }{2cm}
 \RequirePackage[colorinlistoftodos]{todonotes} % useful for leaving todonotes
 \RequirePackage{textcomp} %Text Com­pan­ion fonts
 
@@ -83,10 +85,48 @@
 \RequirePackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 % \usepackage[space]{grffile} % insert files with spaces
 \RequirePackage{pdflscape} % Individual horizontal pages
-\RequirePackage{tcolorbox} % Color boxes for comment
+\RequirePackage[most]{tcolorbox} % Color boxes for comment
 %\usepackage{xargs} % Expanded arguments features
 %\usepackage{fix-cm} % Computer-Modern at arbitrarysizes
 %\usepackage{eurosym} % Eurosymbol
+
+\usepackage{enumitem}
+
+\RequirePackage[compatibility=false, font={small}]{caption} % For custom caption environments
+\RequirePackage{subcaption}
+
+%% ========================================================================
+%% Set itemize, enumerate and description environments
+
+% Set the left margins
+\setlist[itemize]{leftmargin=1.0cm,labelindent=1.0cm}
+\setlist[enumerate]{leftmargin=1.0cm,labelindent=1.0cm}
+\setlist[description]{leftmargin=1.cm,labelindent=0.0cm}
+
+% Set the bullet size
+\renewcommand\labelitemi{\large$\bullet$}
+
+
+%% ========================================================================
+%% Set the section counters to have also subsubsubsection for an extra level of refinement
+
+\titleclass{\subsubsubsection}{straight}[\subsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\makeatletter
+\def\toclevel@subsubsubsection{4}
+\def\l@subsubsubsection{\@dottedtocline{4}{7em}{4em}}
+\makeatother
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
 
 
 %% ========================================================================
@@ -271,7 +311,7 @@
 	\begin{tikzpicture}[remember picture,overlay]
     		\node[anchor=north east,yshift=-2.0cm,xshift=-2cm]%
         			at (current page.north east)
-        		{\ifthenelse{\equal{\InstitutionLogo}{}}{\includegraphics[height=1.0cm]{example-image-a}}{\includegraphics[height=1.0cm]{\InstitutionLogo}}};
+        		{\ifthenelse{\equal{\InstitutionLogo}{}}{\includegraphics[height=1.5cm]{example-image-a}}{\includegraphics[height=1.5cm]{\InstitutionLogo}}};
 	\end{tikzpicture}
 }
 
@@ -537,15 +577,70 @@
 }
 \makeatother
 
-%%%%%%%%%%%%%%%%%
-% TODO COMMANDS %
-%%%%%%%%%%%%%%%%%
 
-\newcommand{\hightodo}[2]{\todo[inline,backgroundcolor=red!90!yellow!80!white]{\textbf{#1}: #2}}
-\newcommand{\lowtodo}[2]{\todo[inline,backgroundcolor=blue!30!white]{\textbf{#1}: #2}}
+%% ========================================================================
+%% Colorboxes
 
+%% Meeting minutes 
+\newtcolorbox{MeetingColorBox}[1]{breakable, enhanced, colback=white,colframe=black,fonttitle=\bfseries,title=#1}
+\colorlet{MeetingMinutesColorBoxBackgroundColorOdd}{white}
+\colorlet{MeetingMinutesColorBoxBackgroundColorEven}{white!90!black}
+
+\xdef\MeetingMinutesColorBoxIsEven{false}
+
+\NewDocumentCommand{\MeetingMinutesColorBoxAlternate}{}{
+	\ifthenelse{\equal{\MeetingMinutesColorBoxIsEven}{true}}{
+		\xdef\MeetingMinutesColorBoxIsEven{false} % switch to odd for next meeting minutes box
+	}
+	{
+		\xdef\MeetingMinutesColorBoxIsEven{true} % switch to even for next meeting minutes box
+	}
+}
+\newenvironment{MeetingMinutes}[2]
+{
+	\ifthenelse{\equal{\MeetingMinutesColorBoxIsEven}{true}}{
+		\begin{tcolorbox}[breakable, enhanced, colback=MeetingMinutesColorBoxBackgroundColorEven,colframe=black,fonttitle=\bfseries, title=#1: \Contributorid{#2}]
+		\setlength\parskip{0.2cm}
+	}
+	{
+		\begin{tcolorbox}[breakable, enhanced, colback=MeetingMinutesColorBoxBackgroundColorOdd,colframe=black,fonttitle=\bfseries, title=#1: \Contributorid{#2}]
+		\setlength\parskip{0.2cm}
+	}	
+}
+{
+	\end{tcolorbox}
+	\vspace*{0.5cm}
+	\MeetingMinutesColorBoxAlternate
+}
+
+
+%% Highlighted remarks/notes
+% Highlighted remark/note with and without title
+\newenvironment{HighlightedNote}[1]
+{
+	\ifthenelse{\equal{#1}{}}{
+		\begin{tcolorbox}[breakable, enhanced, colback=yellow!15!white,colframe=yellow!20!black]
+		\setlength\parskip{0.2cm}
+	}
+	{
+		\begin{tcolorbox}[breakable, enhanced, colback=yellow!15!white,colframe=yellow!20!black, fonttitle=\bfseries, title=#1]
+		\setlength\parskip{0.2cm}
+	}	
+}
+{
+	\end{tcolorbox}
+}
 \newtcolorbox{tip}{colback=blue!5!white,colframe=blue!75!black}
 \newtcolorbox{tipt}[1]{colback=blue!5!white,colframe=blue!75!black,fonttitle=\bfseries,title=#1}
+
+
+%% ========================================================================
+%% TODO commands
+\newcommand{\hightodo}[3]{\todo[inline,backgroundcolor=red!90!yellow!40!white]{\textbf{#1}, \textbf{#2}: #3}}
+\newcommand{\lowtodo}[3]{\todo[inline,backgroundcolor=blue!20!white]{\textbf{#1}, \textbf{#2}: #3}}
+
+
+
 
 % Thick strike out
 \newcommand{\soutthick}[1]{%
@@ -553,59 +648,5 @@
        \sout{#1}%
     \renewcommand{\ULthickness}{.4pt}% Resetting to ulem default
 }
-%%%%%%%%%%%%%%%%%%%
-% VECTOR COMMANDS %
-%%%%%%%%%%%%%%%%%%%
 
-% \newcommand{\vx}{\bar{x}}
-% \newcommand{\vv}{\bar{v}}
-% \newcommand{\vw}{\bar{w}}
-% \newcommand{\vu}{\bar{u}}
-% \newcommand{\vy}{\bar{y}}
-% \newcommand{\vt}{\bar{\theta}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-% INDEPENDENCE SYMBOLS %
-%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \makeatletter
-% \newcommand*{\indep}{%
-%   \mathbin{%
-%     \mathpalette{\@indep}{}%
-%   }%
-% }
-% \newcommand*{\nindep}{%
-%   \mathbin{%                   % The final symbol is a binary math operator
-%     \mathpalette{\@indep}{\not}% \mathpalette helps for the adaptation
-%                                % of the symbol to the different math styles.
-%   }%
-% }
-% \newcommand*{\@indep}[2]{%
-%   % #1: math style
-%   % #2: empty or \not
-%   \sbox0{$#1\perp\m@th$}%        box 0 contains \perp symbol
-%   \sbox2{$#1=$}%                 box 2 for the height of =
-%   \sbox4{$#1\vcenter{}$}%        box 4 for the height of the math axis
-%   \rlap{\copy0}%                 first \perp
-%   \dimen@=\dimexpr\ht2-\ht4-.2pt\relax
-%       % The equals symbol is centered around the math axis.
-%       % The following equations are used to calculate the
-%       % right shift of the second \perp:
-%       % [1] ht(equals) - ht(math_axis) = line_width + 0.5 gap
-%       % [2] right_shift(second_perp) = line_width + gap
-%       % The line width is approximated by the default line width of 0.4pt
-%   \kern\dimen@
-%   {#2}%
-%       % {\not} in case of \nindep;
-%       % the braces convert the relational symbol \not to an ordinary
-%       % math object without additional horizontal spacing.
-%   \kern\dimen@
-%   \copy0 %                       second \perp
-% }
-% \makeatother
-
-%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\renewcommand{\normalsize}{\fontsize{9}{10}\selectfont}
+\renewcommand{\normalsize}{\fontsize{10}{11}\selectfont}
