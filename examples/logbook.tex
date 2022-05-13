@@ -1,27 +1,54 @@
 \documentclass{project-logbook}
 
+\usepackage[backend=bibtex8]{biblatex}
 
+% You can add the maintainer and the contributors in the preamble of the document
+
+% This is how you add the maintainer (there is only one) the maintainer is automatically a contributor, the format is
+% name, id (to appear in short messages), the affiliation. 
 \CreateMaintainer{Maya Toitovna}{mtoitovna}{Mars Center for Outstanding Developments}
-\CreateContributor{fc}{Frank Chalmers}{fchalmers}{Mars Institute of Technology}
-\CreateContributor{ac}{Ann Clayborne}{aclayborne}{Mars Laboratory for Great Achievements}
-\CreateContributor{ab}{Arkady Bogdanov}{abogdanov}{Mars University of Fundamental Research}
+
+% This is how you add a contributors, you can have as many contributors as you like (althought
+% there is a limited space on the front page, at least 25 contributors fit in the front page, which should
+% be more than enought).
+% The format is similar to Maintainer: key, name, id, affiliation. The key field is the difference. It is used
+% to internally identify the contributor, such that one can access the data of each contributor. This is discussed
+% below.
+\CreateContributor{chalmers}{Frank Chalmers}{fchalmers}{Mars Institute of Technology}
+\CreateContributor{ann}{Ann Clayborne}{aclayborne}{Mars Laboratory for Great Achievements}
+\CreateContributor{arkadybogdanov}{Arkady Bogdanov}{abogdanov}{Mars University of Fundamental Research}
 
 
-\SetProjectHeaderName{The very fancy project}
+% The same goes for the titles of the project.
+% Three levels can be used. The project title sets the main title of the project, which appears in the middle of the front page.
+% The project subtitle appears below the project title in the front page and serves as additional information to the title.
+%  Additionally, a shorter title must be set to appear on the header of the document, the header name.
 \SetProjectTitle{The title of the project}
 \SetProjectSubtitle{The subtitle of the project}
+\SetProjectHeaderName{The very fancy project}
 
-\SetInstitutionLogo{figures/institution-logo.pdf}
+% Below the project there is space to add a brief summary of the project for easy understanding when looking at the front page.
 \SetProjectSummary{Here you can add a brief summary of your project such that someone can quickly see what it is about, do not spend more than two lines on it.}
 
-\begin{document}
-\title{CinC-2016 Logbook}
+% The institution logo (typically the one of the maintainer, but a logo file combining different logos can be used, but needs to
+% be in one single pdf or png file) can be set using the following macro
+\SetInstitutionLogo{figures/institution-logo.pdf}
 
+% Set the bibliography file
+\addbibresource{mybib.bib}
+
+% Start the document
+\begin{document}
+
+% The front page is constructed like this, it simply adds the logo, title, subtitle, summary, the maintainer's information, along
+% with the list of all contributors.
 \MakeFrontPage
 
+% Standard LaTeX can be used throughout the document, but additional functionality has been added for simplifying some recurrent tasks and
+% ensuring a consistent format.
 
-\section*{Introduction} % (fold)
-\label{sec:introduction}
+% Sections start in a new page, for this reason sections contain clearly disjoint parts of the document
+\section{Overview} \label{sec:introduction}
 \PrintContributorsList
 \begin{tip}
 In this section one should introduce what the research is abLout, in a high level so you can do a simple explanation of the topic and the research challenges that you are facing.
@@ -48,14 +75,89 @@ The objective of the challenge is to create a model is able to correctly discrim
 
 % section introduction (end)
 
-\section{Dataset and Preprocessing} % (fold)
-\label{sec:dataset_and_preprocessing}
+\section{Meetings}
+	\subsection{External}
+		% We can add meeting minutes for each meeting, by using the MeetingMinutes environment
+		% We just need to specify the date yyyy-mm-dd and the id of the creator of the meeting minutes. 
+		% This id must be either maintainer (for the maintainer) or the id of any of the other contributors.
+		\begin{MeetingMinutes}{2022-05-15}{ann}
+			This is what happened in the meeting.
+			\begin{equation}
+				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x
+			\end{equation}
+			\lipsum[4]
+		\end{MeetingMinutes}
+	
+	\begin{MeetingMinutes}{2022-05-11}{arkadybogdanov}
+		We discussed that the \texttt{MeetingMinutes} environment produces alternating background colours for easier visualisation.
+		\begin{equation}
+			\int_{\Omega}{\varphi(x)}\,\mathrm{d}x
+		\end{equation}
+		
+		\lipsum[3]
+		
+		We can anything inside meeting minutes, including (high priority) todo notes inside the minutes on the same day (or any other day)
+		
+		\hightodo{2022-05-10}{\Contributorid{chalmers}}{Compute the error between mode-downsampled segmentation state vectors at 1000 Hz and state vectors computed at 400 Hz. This needs to be performed to check that the segmentation algorithm is not overfitted to 1000Hz. If error is significant, retrain segmentation at 400 Hz or use 1000 just for segmentation (if Matlab 2016a improvements are true there should be no problem)}
+		
+		or a (low priority) todo note by another contributor, for example
+		
+		\lowtodo{2022-05-12}{\Contributorid{ann}}{Do not forget to first check this less important aspect.}
+	\end{MeetingMinutes}
+	
+	% Meeting minutes alternate in color for easier visual separation. Any LaTeX content can be added inside
+	% the MeetingMinutes environment
+	\begin{MeetingMinutes}{2022-05-10}{chalmers}
+		This time, these meeting minutes, were written by the contributor \ContributorName{chalmers}, as can be seen by the id \emph{\Contributorid{chalmers}}~on the header of the box.
+		
+		During this meeting the following points have been addressed
+		\begin{itemize}
+			\item This first very important point.
+			\item Followed by this second also important point.
+			\item This other less important point was also discussed at the end.
+		\end{itemize}
+		
+		For this meeting this equation was important
+		\begin{equation}
+			\int_{\Omega}{\varphi(x)}\,\mathrm{d}x\,.
+		\end{equation}
+		\lipsum[2]
+		
+		\begin{tip}
+			Meeting minutes boxes can extend over to the next page (or more) if needed.
+		\end{tip}
+	\end{MeetingMinutes}
+	
+	
+	\begin{MeetingMinutes}{2022-05-09}{maintainer}
+		This first meeting's minutes were added by \MaintainerName~(the maintainer of this project logbook), as can be seen by the id \emph{\Maintainerid}~on the header of the box.
+		
+		In this first meeting the following equation was discussed
+		\begin{equation}
+			\int_{\Omega}{\varphi(x)}\,\mathrm{d}x\,.
+		\end{equation}
+		\lipsum[1]
+	\end{MeetingMinutes}
 
+	
+
+
+\section{Topic A to focus on} \label{sec:topic_A}
+	We can use sections organize the text into different parts  such that specific topics are addressed in their own section.
+	
+	\begin{HighlightedNote}{}
+		Each section starts in a new page. All floating objects are printed before the start of the new section and then a new page is added with the section at the top.
+	\end{HighlightedNote}
+	
+	\begin{HighlightedNote}{With a fancy title}
+		The \texttt{HighlightedNotes} environment that generates these fancy boxes, can be used with a title \texttt{\textbackslash begin\string{HighlightedNotes\string}\string{the\_title\_text\string}}, as in this case, or without a title \texttt{\textbackslash begin\string{HighlightedNotes\string}\string{\string}}, as in the previous case.
+	\end{HighlightedNote}
+	
 \begin{tip}
-In most Machine Learning research projects you will be using some kind of samples from a Dataset to learn a model. Thus it is extremely important that you carefully describe the dataset and why you believe is a good dataset for the project and what type of preprocessing are you going to apply
+In most Machine Learning research projects you will be using some kind of samples from a Dataset to learn a model. Thus it is extremely important that you carefully describe the dataset and why you believe is a good dataset for the project and what type of preprocessing are you going to apply.
 \end{tip}
 
-Early approaches failed to build a reliable model due to lack of a large enough data set, so this challenge provides the largest dataset to this day. Heart sound recordings were sourced from several contributors around the world, collected at either a clinical or nonclinical environment, from both healthy subjects and pathological patients. The Challenge training set consists of five databases (A through E) containing a total of 3,126 heart sound recordings, lasting from 5 seconds to just over 120 seconds.
+Early approaches failed to build a reliable model due to lack of a large enough data set, so this challenge provides the largest dataset to this day. Heart sound recordings were sourced from several contributors around the world, collected at either a clinical or nonclinical environment, from both healthy subjects and pathological patients. The Challenge training set consists of five databases (A through E) containing a total of 3,126 heart sound recordings, lasting from 5 seconds to just over 120 seconds. As said in \cite{einstein} and also in \cite{knuth-fa}.
 
 A main problem found when working with these recordings is the strong similarity between the records coming from the same population  as well as the strong class imbalance of roughly 6:1 of Normal to Abnormal.
 
@@ -100,8 +202,7 @@ Table \ref{tab:populations} summarizes the sizes of the different populations as
     \label{tab:populations}
 \end{table}
 
-\subsection{Preprocessing} % (fold)
-\label{sub:preprocessing}
+\subsection{Preprocessing} \label{sub:preprocessing}
 
 There is a high heterogeneity since it was compiled in different environments with diverse systems and devices. The DTW affinity between representative heartbeats is completely biased if we do not apply any kind of preprocessing.
 
@@ -129,9 +230,10 @@ You will often have pending tasks that you need to track. This research journal 
 Note: define your \texttt{userId} in the preamble
 \end{tipt}
 
-\hightodo{\Contributorid{hs}}{ 2016-05-23 : Compute the error between mode-downsampled segmentation state vectors at 1000 Hz and state vectors computed at 400 Hz. This needs to be performed to check that the segmentation algorithm is not overfitted to 1000Hz. If error is significant, retrain segmentation at 400 Hz or use 1000 just for segmentation (if Matlab 2016a improvements are true there should be no problem)}
 
-\lowtodo{\Contributorid{hp}}{ 2016-05-27 : Do DRYRUN with new Matlab 2016a and check the segmentation quota }
+\hightodo{2016-05-23}{\Contributorid{chalmers}}{Compute the error between mode-downsampled segmentation state vectors at 1000 Hz and state vectors computed at 400 Hz. This needs to be performed to check that the segmentation algorithm is not overfitted to 1000Hz. If error is significant, retrain segmentation at 400 Hz or use 1000 just for segmentation (if Matlab 2016a improvements are true there should be no problem)}
+
+\lowtodo{2016-05-27}{\Contributorid{maintainer}}{Do DRYRUN with new Matlab 2016a and check the segmentation quota }
 
 % subsection preprocessing (end)
 
@@ -359,49 +461,48 @@ In general the best way to visualize your results will be some figures, I recomm
 %----------------------------------------------------------------------------------------
 %   REFERENCE LIST
 %----------------------------------------------------------------------------------------
-\clearpage
 \appendix
+
 \section{Resources}
-\begin{tip}
-It is a good idea to record sources that explain concepts or provide tools so the research is both better documented and if someone has to continue with it, there is enough supporting documentation.
-\end{tip}
-\begin{itemize}
-    \item Quick read in DTW and Keogh Lower Bounding
+	\begin{tip}
+		It is a good idea to record sources that explain concepts or provide tools so the research is both better documented and if someone has to continue with it, there is enough supporting documentation.
+	\end{tip}
+	\begin{itemize}
+    		\item Quick read in DTW and Keogh Lower Bounding. \newline
+			\url{http://alexminnaar.com/time-series-classification-and-clustering-with-python.html} \newline
+			\url{http://nbviewer.jupyter.org/github/alexminnaar/time-series-classification-and-clustering/blob/master/Time%20Series%20Classification%20and%20Clustering.ipynb}
+    		
+		\item Parallelizing DTW -- Good article on making a parallel version of DTW. Uses Keogh lower bound not as a linear approximation but as a pruning device. \newline
+			\url{https://www.andrew.cmu.edu/user/mmohta/15418Project/finalreport.html}
 
-\url{http://alexminnaar.com/time-series-classification-and-clustering-with-python.html}
+    		\item Deep Learning
+    			\begin{itemize}
+        				\item Intro to LSTM \newline
+					\url{https://colah.github.io/posts/2015-08-Understanding-LSTMs}
+        				\item Intro to CNN \newline
+					 \url{https://colah.github.io/posts/2014-07-Conv-Nets-Modular/}
+				 \item Why are LSTMs are so useful, impressive result in character pattern and syntax learning \newline
+					\url{https://karpathy.github.io/2015/05/21/rnn-effectiveness/}
+    			\end{itemize}
+	\end{itemize}
 
-\url{http://nbviewer.jupyter.org/github/alexminnaar/time-series-classification-and-clustering/blob/master/Time%20Series%20Classification%20and%20Clustering.ipynb}
-    \item Parallelizing DTW -- Good article on making a parallel version of DTW. Uses Keogh lower bound not as a linear approximation but as a pruning device.
 
-    \url{https://www.andrew.cmu.edu/user/mmohta/15418Project/finalreport.html}
-
-    \item Deep Learning
-    \begin{itemize}
-        \item Intro to LSTM
-
-        \url{https://colah.github.io/posts/2015-08-Understanding-LSTMs}
-        
-        \item Intro to CNN
-
-        \url{https://colah.github.io/posts/2014-07-Conv-Nets-Modular/}
-
-        \item Why are LSTMs are so useful, impressive result in character pattern and syntax learning
-
-        \url{https://karpathy.github.io/2015/05/21/rnn-effectiveness/}
-    \end{itemize}
-\end{itemize}
+%% References (bibliography)
 \section{References}
-\begin{tip}
-Do not forget to cite the papers that you are using in your research, this way the \textbf{Previous Work} part in your paper will be infinitely easier to write when the time comes.
-\end{tip}
-\nocite{*}
-\bibliographystyle{alpha}
-\bibliography{mybib}
-\clearpage
+	\begin{HighlightedNote}{}
+		Do not forget to cite the papers that you are using in your research, this way your work will be infinitely easier to write down and to review when the time comes.
+	\end{HighlightedNote}
+	
+	% Add the bibliography without the header. You can remove the heading=none and \section{References} to have it in a different way. 
+	% Here we keep the references as a section from the Appendix, as an example
+	\printbibliography[heading=none]
+
+
 \section{TO DO}
-\begin{tip}
-Here you will have all your TODOs grouped with anchor links to the parts of the document where they are. Really handy if you do not know where to continue with your project.
-\end{tip}
-\listoftodos
+	\begin{HighlightedNote}{}
+		Here you will have all your TODOs grouped with anchor links to the parts of the document where they are. Really handy if you do not know where to continue with your project.
+	\end{HighlightedNote}
+	
+	\listoftodos
 
 \end{document}
