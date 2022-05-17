@@ -2,13 +2,14 @@
 
 \usepackage[backend=bibtex8]{biblatex}
 
+
 % You can add the maintainer and the contributors in the preamble of the document
 
 % This is how you add the maintainer (there is only one) the maintainer is automatically a contributor, the format is
 % name, id (to appear in short messages), the affiliation. 
-\CreateMaintainer{Maya Toitovna}{mtoitovna}{Mars Center for Outstanding Developments}
+\SetMaintainer{Maya Toitovna}{mtoitovna}{Mars Center for Outstanding Developments}
 
-% This is how you add a contributors, you can have as many contributors as you like (althought
+% This is how you add a contributor, you can have as many contributors as you like (althought
 % there is a limited space on the front page, at least 25 contributors fit in the front page, which should
 % be more than enought).
 % The format is similar to Maintainer: key, name, id, affiliation. The key field is the difference. It is used
@@ -73,7 +74,106 @@
 				\item[\texttt{<affiliation>}] is the affiliation of the contributor, mainly to display on the front page.
     			\end{description}
 			
-			This document is maintained by a unique maintainer, which is set in the preamble with 
+			This document is maintained by a unique maintainer, which is automatically defined as a contributor with key \texttt{maintainer}. The maintainer can be set in the preamble with  \texttt{\textbackslash SetMaintainer\string{<name>\string}\string{<id>\string}\string{<affiliation>\string}}. The meaning of the different input parameters is identical to what was seen above for the contributor.
+			
+			The maintainer name, id, and affiliation can be accessed via the commands \texttt{\textbackslash MaintainerName}, \texttt{\textbackslash Maintainerid} and \texttt{\textbackslash MaintainerInsitution}, which for this case gives: \MaintainerName~(name), \Maintainerid~(id), and \MaintainerInstitution~(affiliation).
+			
+			In a similar way, a contributor can be accessed via the commands \texttt{\textbackslash ContributorName\string{<key>\string}}, \texttt{\textbackslash Contributorid\string{<key>\string}}, and \texttt{\textbackslash ContributorInstitution\string{<key>\string}}, which for this case gives (for key \texttt{chalmers}):  \ContributorName{chalmers}~(name), \Contributorid{chalmers}~(id), and \ContributorInstitution{chalmers}~(affiliation). 
+			
+		\subsubsection{Project title, subtitle, and header name}
+			The project title (which appears in the center of the front page) can be set in the preamble of the document with \texttt{\textbackslash SetProjectTitle\string{<title>\string}}, where \texttt{<title>} is the title we wish to set.
+			
+			Below the project title we can have a project subtitle, which can also be set in the preamble of the document with \texttt{\textbackslash SetProjectSubtitle\string{<subtitle>\string}}, where \texttt{<subtitle>} is the subtitle we wish to set.
+			
+		\subsubsection{Maintainer institution logo}
+			On the top right corner of the front page you can add the logo of the institution of the maintainer. This can be done in the preamble with the command \texttt{\textbackslash SetInstitutionLogo\string{<path\_to\_file>\string}}, where \texttt{<path\_to\_file>} is the path to a .pdf or .png file. If you do not want to show a logo, use a white figure.
+			
+	\subsection{Body}
+		The front page is generated with the command \texttt{\textbackslash MakeFrontPage}. This automatically adds the table of contents on the second page of the document, with direct links to the sections, for quick access.
+		
+		One important section is the Meetings section, which is subdivided into External and Internal. The External subsection contains the minutes of the meetings with external partners and the Internal sections contains the internal meetings associated to the institution of the Maintainer. Any contributor (including the maintainer) can be an author of Meeting minutes.
+		
+		Following the Meetings section, any number of sections can be added focussing on specific topics. The goal of these is to discuss the current state of the development of a particular part of the project. More discussed below.
+		
+		Following these sections, there is an Appendix, containing the list of references (papers to use as reference later when writing a paper), a list of resources such as a link to a video presentation, a tutorial, or something else that is less formal than a reference. In the end, you have a list of TODOs that have been defined in the document. They appear in the order in which they appeared in the document, not by writing date.
+		
+
+\section{Meetings}
+	\subsection{External}
+		% We can add meeting minutes for each meeting, by using the MeetingMinutes environment
+		% We just need to specify the date yyyy-mm-dd and the id of the creator of the meeting minutes. 
+		% This id must be either maintainer (for the maintainer) or the id of any of the other contributors.
+		\begin{MeetingMinutes}{2022-05-15}{ann}
+			This is what happened in the meeting.
+			\begin{equation}
+				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x
+			\end{equation}
+			\lipsum[4]
+		\end{MeetingMinutes}
+	
+		\begin{MeetingMinutes}{2022-05-11}{arkadybogdanov}
+			We discussed that the \texttt{MeetingMinutes} environment produces alternating background colours for easier visualisation.
+			\begin{equation}
+				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x
+			\end{equation}
+			
+			\lipsum[3]
+			
+			We can anything inside meeting minutes, including (high priority) todo notes inside the minutes on the same day (or any other day), see \secref{sub:preprocessing} for more details.
+			
+			\hightodo{2022-05-10}{chalmers}{Compute the error between mode-downsampled segmentation state vectors at 1000 Hz and state vectors computed at 400 Hz. This needs to be performed to check that the segmentation algorithm is not overfitted to 1000Hz. If error is significant, retrain segmentation at 400 Hz or use 1000 just for segmentation (if Matlab 2022a improvements are true there should be no problem)}
+			
+			or a (low priority) todo note by another contributor, for example
+		
+			\lowtodo{2022-05-12}{ann}{Do not forget to first check this less important aspect.}
+		\end{MeetingMinutes}
+	
+		% Meeting minutes alternate in color for easier visual separation. Any LaTeX content can be added inside
+		% the MeetingMinutes environment
+		\begin{MeetingMinutes}{2022-05-10}{chalmers}
+			This time, these meeting minutes, were written by the contributor \ContributorName{chalmers}, as can be seen by the id \emph{\Contributorid{chalmers}}~on the header of the box.
+		
+			During this meeting the following points have been addressed
+			\begin{itemize}
+				\item This first very important point.
+				\item Followed by this second also important point.
+				\item This other less important point was also discussed at the end.
+			\end{itemize}
+			
+			For this meeting this equation was important
+			\begin{equation}
+				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x\,.
+			\end{equation}
+			\lipsum[2]
+			
+			\begin{HighlightedNote}{}
+				Meeting minutes boxes can extend over to the next page (or more) if needed.
+			\end{HighlightedNote}
+		\end{MeetingMinutes}
+	
+	
+		\begin{MeetingMinutes}{2022-05-09}{maintainer}
+			This first meeting's minutes were added by \MaintainerName~(the maintainer of this project logbook), as can be seen by the id \emph{\Maintainerid}~on the header of the box.
+		
+			In this first meeting the following equation was discussed
+			\begin{equation}
+				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x\,.
+			\end{equation}
+			\lipsum[1]
+		\end{MeetingMinutes}
+
+	\subsection{Internal}
+		\begin{MeetingMinutes}{2022-05-15}{chalmers}
+			You can also add internal meetings when the participants are only from your group, no external people are involved.
+			\begin{equation}
+				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x\,.
+			\end{equation}
+			\lipsum[1]
+		\end{MeetingMinutes}
+
+
+\section{Topic A to focus on} \label{sec:topic_A}
+	We can use sections organize the text into different parts  such that specific topics are addressed in their own section.
 	
 	\begin{HighlightedNote}{}
 		Sections always start at the top of a new page in order to generate clearly separated parts of the document. In this first section (Overview) one should introduce what this project is about, in a high level so you can do a simple explanation of the topic and the research challenges, who is involved, etc.
@@ -107,7 +207,11 @@
 		and other elements.
     
 	\end{HighlightedNote}
-
+	
+	\begin{HighlightedNote}{With a fancy title}
+		The \texttt{HighlightedNotes} environment that generates these fancy boxes, can be used with a title \texttt{\textbackslash begin\string{HighlightedNotes\string}\string{the\_title\_text\string}}, as in this case, or without a title \texttt{\textbackslash begin\string{HighlightedNotes\string}\string{\string}}, as in the previous case.
+	\end{HighlightedNote}
+	
 	\subsection{A subsection}
 		You can subdivide your section in a finer level using \texttt{\textbackslash subsection}.
 		
@@ -116,232 +220,120 @@
 			
 			\subsubsubsection{A subsubsubsection}
 				And an additional level was added to subdivide subsubsections named \texttt{\textbackslash subsubsubsection}. This should give more than enough subdivision levels to your text for fine grained organisation.
-			
-During the cardiac cycle, the heart firstly generates the electrical activity and then the electrical activity causes atrial and ventricular contractions. This in turn forces blood between the chambers of the heart and around the body. The opening and closure of the heart valves is associated with accelerations-decelerations of blood, giving rise to vibrations of the entire cardiac structure (the heart sounds and murmurs). These vibrations are audible at the chest wall, and listening for specific heart sounds can give an indication of the health of the heart. The phonocardiogram (PCG) is the graphical representation of a heart sound recording. Figure \ref{fig:PCG_ECG} illustrates a short section of a PCG recording.
-
-Then all the contributors: {\GetAllContributorKeys{Name: \ContributorName{#1} }
-
-\begin{figure}[h]
-    \includegraphics[width=0.6\textwidth]{figures/PCG_ECG}
-    \centering
-    \caption{A PCG (center tracing), with simultaneously recorded ECG (lower tracing) and the four states of the PCG recording; S1, Systole, S2 and Diastole.}
-    \label{fig:PCG_ECG}
-\end{figure}
-
-The objective of the challenge is to create a model is able to correctly discriminate between the two classes given just the PCG recordings. Challenges include:
-
-\begin{itemize}
-    \item Data is subject to temporal variations due to variations in the heart rate.
-    \item Inter-patient differences make difficult a learn a model that generalizes well across patients.
-    \item Differences introduced by heterogeneity in the collection of the recordings can render a classifier trained on one population useless when applied to another
-\end{itemize}
-
-% section introduction (end)
-
-\section{Meetings}
-	\subsection{External}
-		% We can add meeting minutes for each meeting, by using the MeetingMinutes environment
-		% We just need to specify the date yyyy-mm-dd and the id of the creator of the meeting minutes. 
-		% This id must be either maintainer (for the maintainer) or the id of any of the other contributors.
-		\begin{MeetingMinutes}{2022-05-15}{ann}
-			This is what happened in the meeting.
-			\begin{equation}
-				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x
-			\end{equation}
-			\lipsum[4]
-		\end{MeetingMinutes}
 	
-	\begin{MeetingMinutes}{2022-05-11}{arkadybogdanov}
-		We discussed that the \texttt{MeetingMinutes} environment produces alternating background colours for easier visualisation.
-		\begin{equation}
-			\int_{\Omega}{\varphi(x)}\,\mathrm{d}x
-		\end{equation}
-		
-		\lipsum[3]
-		
-		We can anything inside meeting minutes, including (high priority) todo notes inside the minutes on the same day (or any other day)
-		
-		\hightodo{2022-05-10}{\Contributorid{chalmers}}{Compute the error between mode-downsampled segmentation state vectors at 1000 Hz and state vectors computed at 400 Hz. This needs to be performed to check that the segmentation algorithm is not overfitted to 1000Hz. If error is significant, retrain segmentation at 400 Hz or use 1000 just for segmentation (if Matlab 2016a improvements are true there should be no problem)}
-		
-		or a (low priority) todo note by another contributor, for example
-		
-		\lowtodo{2022-05-12}{\Contributorid{ann}}{Do not forget to first check this less important aspect.}
-	\end{MeetingMinutes}
-	
-	% Meeting minutes alternate in color for easier visual separation. Any LaTeX content can be added inside
-	% the MeetingMinutes environment
-	\begin{MeetingMinutes}{2022-05-10}{chalmers}
-		This time, these meeting minutes, were written by the contributor \ContributorName{chalmers}, as can be seen by the id \emph{\Contributorid{chalmers}}~on the header of the box.
-		
-		During this meeting the following points have been addressed
-		\begin{itemize}
-			\item This first very important point.
-			\item Followed by this second also important point.
-			\item This other less important point was also discussed at the end.
-		\end{itemize}
-		
-		For this meeting this equation was important
-		\begin{equation}
-			\int_{\Omega}{\varphi(x)}\,\mathrm{d}x\,.
-		\end{equation}
-		\lipsum[2]
-		
-		\begin{tip}
-			Meeting minutes boxes can extend over to the next page (or more) if needed.
-		\end{tip}
-	\end{MeetingMinutes}
-	
-	
-	\begin{MeetingMinutes}{2022-05-09}{maintainer}
-		This first meeting's minutes were added by \MaintainerName~(the maintainer of this project logbook), as can be seen by the id \emph{\Maintainerid}~on the header of the box.
-		
-		In this first meeting the following equation was discussed
-		\begin{equation}
-			\int_{\Omega}{\varphi(x)}\,\mathrm{d}x\,.
-		\end{equation}
-		\lipsum[1]
-	\end{MeetingMinutes}
+				\begin{HighlightedNote}{}
+					In most Machine Learning research projects you will be using some kind of samples from a Dataset to learn a model. Thus it is extremely important that you carefully describe the dataset and why you believe is a good dataset for the project and what type of preprocessing are you going to apply.
+				\end{HighlightedNote}
 
-	
+				As usual, you can use your references to cite relevant articles as \cite{einstein} and \cite{knuth-fa}.
 
-%%
-\section{Topic A to focus on} \label{sec:topic_A}
-	We can use sections organize the text into different parts  such that specific topics are addressed in their own section.
-	
-	\begin{HighlightedNote}{}
-		Each section starts in a new page. All floating objects are printed before the start of the new section and then a new page is added with the section at the top.
-	\end{HighlightedNote}
-	
-	\begin{HighlightedNote}{With a fancy title}
-		The \texttt{HighlightedNotes} environment that generates these fancy boxes, can be used with a title \texttt{\textbackslash begin\string{HighlightedNotes\string}\string{the\_title\_text\string}}, as in this case, or without a title \texttt{\textbackslash begin\string{HighlightedNotes\string}\string{\string}}, as in the previous case.
-	\end{HighlightedNote}
-	
-\begin{tip}
-In most Machine Learning research projects you will be using some kind of samples from a Dataset to learn a model. Thus it is extremely important that you carefully describe the dataset and why you believe is a good dataset for the project and what type of preprocessing are you going to apply.
-\end{tip}
-
-Early approaches failed to build a reliable model due to lack of a large enough data set, so this challenge provides the largest dataset to this day. Heart sound recordings were sourced from several contributors around the world, collected at either a clinical or nonclinical environment, from both healthy subjects and pathological patients. The Challenge training set consists of five databases (A through E) containing a total of 3,126 heart sound recordings, lasting from 5 seconds to just over 120 seconds. As said in \cite{einstein} and also in \cite{knuth-fa}.
-
-A main problem found when working with these recordings is the strong similarity between the records coming from the same population  as well as the strong class imbalance of roughly 6:1 of Normal to Abnormal.
-
-Table \ref{tab:populations} summarizes the sizes of the different populations as well as their class imbalance
+				You can use tables and, of course, make references to them, like the amazing \tabref{tab:populations}.
 
 
-\begin{table}[ht]
-    \centering
-    \begin{subtable}{0.48\textwidth}
-        \centering
-        \begin{tabular}{*{5}{r}}
-            {}  & \multicolumn{1}{c}{$A$} & \multicolumn{1}{c}{$N$} & \multicolumn{1}{c}{$S$} & \multicolumn{1}{c}{$A/S$} \\
-            \midrule
-            a & 292 & 117   & 409   & 0.714 \\
-            b & 104 & 386   & 490   & 0.212 \\
-            c & 24  & 7     & 31    & 0.774 \\
-            d & 28  & 27    & 55    & 0.509 \\
-            e & 183 & 1958  & 2141  & 0.085 \\
-            \midrule
-            & 631 & 2495 & 3126 & 0.202 \\
-        \end{tabular}
-        \caption{Training Set}
-    \end{subtable}
-    %
-    \begin{subtable}{0.48\textwidth}
-        \centering
-        \begin{tabular}{*{6}{r}}
-            {}  & \multicolumn{1}{c}{$A'$} & \multicolumn{1}{c}{$N'$} & \multicolumn{1}{c}{$S'$} & \multicolumn{1}{c}{$A'/S'$} & $S'/S$ \\
-            \midrule
-            a & 40  & 40    & 80    & 0.5   & 0.20 \\
-            b & 49  & 49    & 98    & 0.5   & 0.20 \\
-            c & 4   & 3     & 7     & 0.57  & 0.23 \\
-            d & 5   & 5     & 10    & 0.5   & 0.18 \\
-            e & 53  & 53    & 106   & 0.5   & 0.05 \\
-            \midrule
-            & 151 & 150 & 301 & 0.50 & 0.10 \\
-        \end{tabular}
-        \caption{Validation Set}
-    \end{subtable}
+				\begin{table}[ht]
+					\centering
+						\begin{subtable}{0.48\textwidth}
+							\centering
+        								\begin{tabular}{*{5}{r}}
+									{}  & \multicolumn{1}{c}{$A$} & \multicolumn{1}{c}{$N$} & \multicolumn{1}{c}{$S$} & \multicolumn{1}{c}{$A/S$} \\
+									\midrule
+									a & 292 & 117   & 409   & 0.714 \\
+									b & 104 & 386   & 490   & 0.212 \\
+									c & 24  & 7     & 31    & 0.774 \\
+									d & 28  & 27    & 55    & 0.509 \\
+									e & 183 & 1958  & 2141  & 0.085 \\
+									\midrule
+									& 631 & 2495 & 3126 & 0.202 \\
+								\end{tabular}
+							\caption{Training Set}
+						\end{subtable}
+    						%
+    						\begin{subtable}{0.48\textwidth}
+        							\centering
+        								\begin{tabular}{*{6}{r}}
+									{}  & \multicolumn{1}{c}{$A'$} & \multicolumn{1}{c}{$N'$} & \multicolumn{1}{c}{$S'$} & \multicolumn{1}{c}{$A'/S'$} & $S'/S$ \\
+									\midrule
+									a & 40  & 40    & 80    & 0.5   & 0.20 \\
+									b & 49  & 49    & 98    & 0.5   & 0.20 \\
+									c & 4   & 3     & 7     & 0.57  & 0.23 \\
+									d & 5   & 5     & 10    & 0.5   & 0.18 \\
+									e & 53  & 53    & 106   & 0.5   & 0.05 \\
+									\midrule
+									& 151 & 150 & 301 & 0.50 & 0.10 \\
+								\end{tabular}
+								\caption{Validation Set}
+						\end{subtable}
     
-    \caption{Population properties $A \equiv$ Abnormal, $N\equiv$ Normal, $S\equiv A+N$}
-    \label{tab:populations}
-\end{table}
+    						\caption{Population properties $A \equiv$ Abnormal, $N\equiv$ Normal, $S\equiv A+N$}
+    						\label{tab:populations}
+				\end{table}
 
-\subsection{Preprocessing} \label{sub:preprocessing}
+	\subsection{Another subsection} \label{sub:another_subsection}
+		Relevant equations can be added
 
-There is a high heterogeneity since it was compiled in different environments with diverse systems and devices. The DTW affinity between representative heartbeats is completely biased if we do not apply any kind of preprocessing.
+		\begin{equation}
+    			x_i' \gets \frac{x_i-\bar{x}}{\upsigma}
+		\end{equation}
+		\begin{equation}
+    			\bar{x} = \frac{1}{N}\sum_{i=1}^{N} x_i \qquad \upsigma^2 = {\frac{1}{N}\sum_{i=1}^{N} (x_i-\bar{x})}
+		\end{equation}
 
-To prevent this a simple zero mean unit variance normalization approach is used to get closer distances. Nevertheless with a reasonable $\upsigma  = 10^{2.5}$ we can note that the population distances are still there except less noticeable.
+		\begin{HighlightedNote}{Strike-through}
+ 			Often you will be wrong on your assumptions, but do not throw them away completely, just cross them out in case you need them later using the \texttt{\textbackslash sout} command and it will look like \sout{this} or \texttt{\textbackslash soutthick} command and it will look like \soutthick{this}
+		\end{HighlightedNote}
 
-\begin{equation}
-    x_i' \gets \frac{x_i-\bar{x}}{\upsigma}
-\end{equation}
-\begin{equation}
-    \bar{x} = \frac{1}{N}\sum_{i=1}^{N} x_i \qquad \upsigma^2 = {\frac{1}{N}\sum_{i=1}^{N} (x_i-\bar{x})}
-\end{equation}
+		\sout{Medoid computation is perfomed at $f_s'' = f_s'/5 = \SI{200}{\kilo\hertz}$ to speed computation. Simple analysis was performed to check that the features extracted from these 200Hz-medoids were approximately the same as the ones extracted from the  1khz-medoids.}
 
-All the provided records were sampled at $f_s = \SI{2}{\kilo\Hz}$. The segmentation algorithm resamples them\footnote{Resampling = Low Pass Filter + Downsampling by M. The filter will have $\omega_c = \pi/N$ to prevent aliasing} to $ f_s' = \SI{1}{\kilo\Hz}$.
-\begin{tipt}{Strike-through}
- Often you will be wrong on your assumptions, but do not throw them away completely, just cross them out in case you need them later using the \texttt{\textbackslash sout} command and it will look like \sout{this} or \texttt{\textbackslash soutthick} command and it will look like \soutthick{this}
-\end{tipt}
+		\soutthick{Downsampling can be seen as a problem of information loss in the frequency spectrum. If the frequency content $f > f_s/(2N)$ is mostly empty for $N$ when we downsample by said $N$ we will only be losing information in that range.}
 
-\sout{Medoid computation is perfomed at $f_s'' = f_s'/5 = \SI{200}{\kilo\hertz}$ to speed computation. Simple analysis was performed to check that the features extracted from these 200Hz-medoids were approximately the same as the ones extracted from the  1khz-medoids.}
+		\begin{HighlightedNote}{TODOs}
+			You will often have pending tasks that you need to track. This project logbook allows you to include both high and low priority todos that will be summarised in a list at the end of the file. Use the commands \texttt{\textbackslash hightodo\string{<date\_added>\string}\string{<author\_key>\string}} and \texttt{\textbackslash lowtodo}, including a date is recommended for tracking purposes.
 
-\soutthick{Downsampling can be seen as a problem of information loss in the frequency spectrum. If the frequency content $f > f_s/(2N)$ is mostly empty for $N$ when we downsample by said $N$ we will only be losing information in that range.}
-
-\begin{tipt}{TODOs}
-You will often have pending tasks that you need to track. This research journal allows you to include both high and low priority todos that will be summarized in a list at the end of the file. Use the commands \texttt{\textbackslash hightodo} and \texttt{\textbackslash lowtodo}, including a date is recommended for tracking purposes.
-
-Note: define your \texttt{userId} in the preamble
-\end{tipt}
+			Note: define your \texttt{userId} in the preamble
+		\end{HighlightedNote}
 
 
-\hightodo{2016-05-23}{\Contributorid{chalmers}}{Compute the error between mode-downsampled segmentation state vectors at 1000 Hz and state vectors computed at 400 Hz. This needs to be performed to check that the segmentation algorithm is not overfitted to 1000Hz. If error is significant, retrain segmentation at 400 Hz or use 1000 just for segmentation (if Matlab 2016a improvements are true there should be no problem)}
+		\lowtodo{2016-05-23}{chalmers}{Try the code in the newest version of numpy compiled with optimized BLAS.}
 
-\lowtodo{2016-05-27}{\Contributorid{maintainer}}{Do DRYRUN with new Matlab 2016a and check the segmentation quota }
-
-% subsection preprocessing (end)
-
-% section dataset_and_preprocessing (end)
-\newpage
-\section{Methods} % (fold)
-\label{sec:methods}
-
-\subsection{Algorithms} % (fold)
-\label{sub:algorithms}
-
-\begin{tip}
-Sometimes the most straightforward way to explain a procedure is just to give it in a algorithmic format, it takes a little time but it will force you to go thorugh the steps and you will most likely be able to reuse it on you paper.
-Note: You will need to have \texttt{\textbackslash ALGORITHMStrue} in the preamble to enable algorithms
-\end{tip}
-
-\begin{algorithm}
-\caption{Euclid’s algorithm}\label{alg:euclid}
-\begin{algorithmic}[1]
-\Procedure{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
-\State $r\gets a\bmod b$
-\While{$r\not=0$}\Comment{We have the answer if r is 0}
-\State $a\gets b$
-\State $b\gets r$
-\State $r\gets a\bmod b$
-\EndWhile\label{euclidendwhile}
-\State \textbf{return} $b$\Comment{The gcd is b}
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
+		\hightodo{2016-05-27}{maintainer}{Perform convergence analysis with the latest version of the code.}
 
 
-% subsection algorithms (end)
+\section{Topic B to focus on} \label{sec:topic_B}
 
-\subsection{Code} % (fold)
-\label{sub:code}
+	\subsection{Algorithms} \label{sub:algorithms}
 
-\begin{tip}
-If the algorithm is to vague and you feel like you need the source code you can also insert it. You can put LaTeX code inside by using \texttt{<@ @>} delimiters and highlight it with \texttt{<| |>} delimiters
+		\begin{HighlightedNote}{}
+			Sometimes the most straightforward way to explain a procedure is just to give it in a algorithmic format, it takes a little time but it will force you to go through the steps and you will most likely be able to reuse it on you paper. For the full documentation see here \url{https://texdoc.org/serve/algorithmicx/0}.
+		\end{HighlightedNote}
 
-Note: you will need to have \texttt{\textbackslash
-LISTINGStrue} in the preamble.
-\end{tip}
+		\begin{algorithm}
+			\caption{Euclid’s algorithm}\label{alg:euclid}
+			\begin{algorithmic}[1]
+				\Procedure{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
+					\State $r\gets a\bmod b$
+					\While{$r\not=0$}\Comment{We have the answer if r is 0}
+						\State $a\gets b$
+						\State $b\gets r$
+						\State $r\gets a\bmod b$
+					\EndWhile\label{euclidendwhile}
+					\State \textbf{return} $b$\Comment{The gcd is b}
+				\EndProcedure
+			\end{algorithmic}
+		\end{algorithm}
 
-\begin{lstlisting}[style=Python]
+
+	\subsection{Code} \label{sub:code}
+		\begin{HighlightedNote}{}
+			If the algorithm is too vague and you feel like you need the source code you can also insert it. You can put LaTeX code inside by using \texttt{<@ @>} delimiters, highlight small pieces of the code with \texttt{<| |>} delimiters, and highlight full lines (see the source code). For now only Python colored syntax highlighting is available, but most languages are supported and the color scheme can be added. More information available here \url{https://www.overleaf.com/learn/latex/Code_listing}.
+			
+			Note that these pieces of code in the \LaTeX~document must start with no indent.
+		\end{HighlightedNote}
+
+\begin{lstlisting}[style=Python, linebackgroundcolor={
+	\ifnum \value{lstnumber}=8 \color{orange!30} \fi
+	\ifnum \value{lstnumber}=10 \color{orange!30} \fi
+	\ifnum \value{lstnumber}=17 \color{orange!30}\fi
+	\ifnum \value{lstnumber}=18 \color{orange!30}\fi}]
 def DTW_distance(s1, s2):
 	"""
 	Function to compute the Dynamic Time Warping in Python between two signals
@@ -356,140 +348,129 @@ def DTW_distance(s1, s2):
 
 	for i in range(len(s1)):
 		for j in range(len(s2)):
-			dist= (s1[i]-s2[j])**2
-			<|DTW[(i, j)] = dist + min(DTW[(i-1, j)],DTW[(i, j-1)], DTW[(i-1, j-1)])|>
+			dist= <|(s1[i]-s2[j])**2|>
+			DTW[(i,j)] = dist + min(DTW[(i-1, j)],DTW[(i, j-1)], \
+				DTW[(i-1, j-1)])
 
 	return sqrt(DTW[len(s1)-1, len(s2)-1])
 \end{lstlisting}
 
-% subsection code (end)
-\clearpage
-\subsection{Diagrams} % (fold)
-\label{sub:diagrams}
+	\subsection{Diagrams} \label{sub:diagrams}
+		\begin{HighlightedNote}{}
+			For simple diagrams I highly recommend learning TiKZ, you will be drawing the diagrams in pure \LaTeX which has a steep learning curve but once you get used to it, it can be quite easy to display and do \texttt{for} loops to draw multiples line at once.
+		\end{HighlightedNote}
 
-\begin{tip}
-For simple diagrams I highly recommend learning TiKZ, you will be drawing the diagrams in pure \LaTeX which has a steep learning curve but once you get used to it, it can be quite easy to display and do \texttt{for} loops to draw multiples line at once.
+		\begin{figure}[!h]
+			\centering
+				\tikzset{%
+  					every neuron/.style={
+    						circle,
+    						draw,
+    						minimum size=1cm
+  					},
+  					neuron missing/.style={
+    						draw=none,
+    						scale=4,
+    						text height=0.333cm,
+    						execute at begin node=\color{black}$\vdots$
+  					},
+				}
 
-Note: you will need to have \texttt{\textbackslash
-TiKZtrue} in the preamble
-\end{tip}
+				\begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
+					\foreach \m/\l [count=\y] in {1,2,3,4,missing,5}
+  						\node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+					
+					\foreach \m [count=\y] in {1,2,missing,3}
+  						\node [every neuron/.try, neuron \m/.try ] (hidden-\m) at (2,2-\y*1.25) {};
+					
+					\foreach \m [count=\y] in {1,2,missing,3}
+  						\node [every neuron/.try, neuron \m/.try ] (output-\m) at (4,1.5-\y) {};
 
-\begin{figure}[!h]
-\centering
-\tikzset{%
-  every neuron/.style={
-    circle,
-    draw,
-    minimum size=1cm
-  },
-  neuron missing/.style={
-    draw=none,
-    scale=4,
-    text height=0.333cm,
-    execute at begin node=\color{black}$\vdots$
-  },
-}
+					\foreach \l [count=\i] in {1,2,3,4,n}
+  						\draw [<-] (input-\i) -- ++(-1,0)
+    							node [above, midway] {$I_\l$};
 
-\begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
+					\foreach \l [count=\i] in {1,2,n}
+  						\node [above] at (hidden-\i.north) {$H_\l$};
 
-\foreach \m/\l [count=\y] in {1,2,3,4,missing,5}
-  \node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
+					\foreach \l [count=\i] in {1,2,n}
+  						\draw [->] (output-\i) -- ++(1,0)
+    							node [above, midway] {$O_\l$};
 
-\foreach \m [count=\y] in {1,2,missing,3}
-  \node [every neuron/.try, neuron \m/.try ] (hidden-\m) at (2,2-\y*1.25) {};
+					\foreach \i in {1,...,5}
+  						\foreach \j in {1,...,3}
+    							\draw [->] (input-\i) -- (hidden-\j);
 
-\foreach \m [count=\y] in {1,2,missing,3}
-  \node [every neuron/.try, neuron \m/.try ] (output-\m) at (4,1.5-\y) {};
+					\foreach \i in {1,...,3}
+  						\foreach \j in {1,...,3}
+    							\draw [->] (hidden-\i) -- (output-\j);
 
-\foreach \l [count=\i] in {1,2,3,4,n}
-  \draw [<-] (input-\i) -- ++(-1,0)
-    node [above, midway] {$I_\l$};
+					\foreach \l [count=\x from 0] in {Input, Hidden, Ouput}
+  						\node [align=center, above] at (\x*2,2) {\l \\ layer};
 
-\foreach \l [count=\i] in {1,2,n}
-  \node [above] at (hidden-\i.north) {$H_\l$};
+				\end{tikzpicture}
+		\end{figure}
 
-\foreach \l [count=\i] in {1,2,n}
-  \draw [->] (output-\i) -- ++(1,0)
-    node [above, midway] {$O_\l$};
+		\begin{HighlightedNote}{}
+			However, sometimes you will need more complicated diagrams (or maybe you do not like TiKZ, in that case I recommend a vector drawing tool such as Inkscape which allows \LaTeX \,embedding)
+		\end{HighlightedNote}
 
-\foreach \i in {1,...,5}
-  \foreach \j in {1,...,3}
-    \draw [->] (input-\i) -- (hidden-\j);
+		\begin{figure}[h]
+    			\includegraphics[width=0.9\textwidth]{figures/LSTM}
+    			\centering
+    			\caption{Gate Recurrent Unit in a Long Short Term Memory Neural Netwok (GRU-LSTM). \\ \emph{Credit to \url{https://colah.github.io/posts/2015-08-Understanding-LSTMs/}}}
+    			\label{fig:LSTM}
+		\end{figure}
+		
 
-\foreach \i in {1,...,3}
-  \foreach \j in {1,...,3}
-    \draw [->] (hidden-\i) -- (output-\j);
+\section{Topic C to focus on} \label{sec:topic_c}
+	\subsection{Figures} \label{sub:figures}
 
-\foreach \l [count=\x from 0] in {Input, Hidden, Ouput}
-  \node [align=center, above] at (\x*2,2) {\l \\ layer};
+		\begin{HighlightedNote}{}
+			In general the best way to visualize your results will be some figures, I recommend Python's matplotlib for generating them or any other tool you are familiar with.
+		\end{HighlightedNote}
 
-\end{tikzpicture}
-\end{figure}
-
-\begin{tip}
-However, sometimes you will need more complicated diagrams (or maybe you do not like TiKZ, in that case I recommend a vector drawing tool such as Inkscape which allows \LaTeX \,embedding)
-\end{tip}
-
-\begin{figure}[h]
-    \includegraphics[width=0.9\textwidth]{figures/LSTM}
-    \centering
-    \caption{Gate Recurrent Unit in a Long Short Term Memory Neural Netwok (GRU-LSTM). \\ \emph{Credit to \url{https://colah.github.io/posts/2015-08-Understanding-LSTMs/}}}
-    \label{fig:LSTM}
-\end{figure}
-
-% subsection diagrams (end)
-
-% section methods (end)
-
-\section{Results} % (fold)
-\label{sec:results}
-
-\subsection{Figures} % (fold)
-\label{sub:figures}
-
-\begin{tip}
-In general the best way to visualize your results will be some figures, I recommend Python's matplotlib for generating them or R's ggplot2.
-\end{tip}
-
-\begin{figure}[htp]
-    \centering
-    \begin{subfigure}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/accuracy_128.png}
-        \caption{Average accuracies for 128-bit key}
-    \end{subfigure}
-    \hspace{.35cm}
-    \begin{subfigure}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/accuracy_192.png}
-        \caption{Average accuracies for 192-bit key}
-    \end{subfigure}%
-
-    \vspace{1cm}
-    \begin{subfigure}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/accuracy_256.png}
-        \caption{Average accuracies for 256-bit key}
-    \end{subfigure}
-    \hspace{.35cm}
-    \begin{subfigure}{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/times.png}
-        \caption{Average Runtimes for various mask sizes}
-    \end{subfigure}
-    \vspace{.25cm}
-    \caption{Results of simulation of the LMS algorithm with correction}
-    \label{fig:plots}
-\end{figure}
+		\begin{figure}[htp]
+    			\centering
+				\begin{subfigure}{0.48\textwidth}
+        					\centering
+        						\includegraphics[width=\textwidth]{figures/sfem_1D_p3.pdf}
+        						\caption{One-dimensional spectral element basis functions of polynomial degree $p = 3$ for subspace $G_{3} \subset H^{1}(\Omega)$, $\Omega\in\mathbb{R}$.}
+    				\end{subfigure}
+    				\hspace{.35cm}
+    				\begin{subfigure}{0.48\textwidth}
+        					\centering
+        						\includegraphics[width=\textwidth]{figures/sfem_1D_p5.pdf}
+        						\caption{One-dimensional spectral element basis functions of polynomial degree $p = 5$ for the subspace $G_{5} \subset H^{1}(\Omega)$, $\Omega\in\mathbb{R}$.}
+    				\end{subfigure}
+				
+				\vspace{1cm}
+    				
+				\begin{subfigure}{0.48\textwidth}
+        					\centering
+        						\includegraphics[width=\textwidth]{figures/sfem_p3.png}
+        						\caption{Two-dimensional spectral element basis functions of polynomial degree $p = 3$ for subspace $G_{3} \subset H^{1}(\Omega)$, $\Omega\in\mathbb{R}^{2}$.}
+    				\end{subfigure}
+    				\hspace{.35cm}
+    				\begin{subfigure}{0.48\textwidth}
+        					\centering
+        						\includegraphics[width=\textwidth]{figures/sfem_p5.png}
+        						\caption{Two-dimensional spectral element basis functions of polynomial degree $p = 5$ for the subspace $G_{5} \subset H^{1}(\Omega)$, $\Omega\in\mathbb{R}^{2}$.}
+    				\end{subfigure}
+				
+   				\vspace{.25cm}
+    				\caption{Example basis functions for the spectral finite element method in 1D and 2D.}
+    				\label{fig:plots}
+		\end{figure}
 
 % subsection figures (end)
 
 \subsection{Tables} % (fold)
 \label{sub:tables}
 
-\begin{tip}
+\begin{HighlightedNote}{}
 \LaTeX \; booktab environments are really good to showcase and track your results, however they can get fairly messy. My suggestion is to generate them via Python automatically and store the results in either a plain text file or a spreadsheet (there are packages to read spreadsheets with Python)
-\end{tip}
+\end{HighlightedNote}
 
 \begin{table}[ht]
      \centering
@@ -526,10 +507,21 @@ In general the best way to visualize your results will be some figures, I recomm
 %----------------------------------------------------------------------------------------
 \appendix
 
+%% References (bibliography)
+\section{References}
+	\begin{HighlightedNote}{}
+		Do not forget to cite the papers that you are using in your research, this way your work will be infinitely easier to write down and to review when the time comes.
+	\end{HighlightedNote}
+	
+	% Add the bibliography without the header. You can remove the heading=none and \section{References} to have it in a different way. 
+	% Here we keep the references as a section from the Appendix, as an example
+	\printbibliography[heading=none]
+	
+	
 \section{Resources}
-	\begin{tip}
-		It is a good idea to record sources that explain concepts or provide tools so the research is both better documented and if someone has to continue with it, there is enough supporting documentation.
-	\end{tip}
+	\begin{HighlightedNote}{}
+		It is a good idea to record sources that explain concepts or provide tools so the research is both better documented and if someone has to continue it there is enough supporting documentation.
+	\end{HighlightedNote}
 	\begin{itemize}
     		\item Quick read in DTW and Keogh Lower Bounding. \newline
 			\url{http://alexminnaar.com/time-series-classification-and-clustering-with-python.html} \newline
@@ -550,22 +542,12 @@ In general the best way to visualize your results will be some figures, I recomm
 	\end{itemize}
 
 
-%% References (bibliography)
-\section{References}
-	\begin{HighlightedNote}{}
-		Do not forget to cite the papers that you are using in your research, this way your work will be infinitely easier to write down and to review when the time comes.
-	\end{HighlightedNote}
-	
-	% Add the bibliography without the header. You can remove the heading=none and \section{References} to have it in a different way. 
-	% Here we keep the references as a section from the Appendix, as an example
-	\printbibliography[heading=none]
-
-
-%% Add the list of todos in the end	
-\listoftodos
-
+%% Add the list of todos in the end
+\section{TODOS}
 	\begin{HighlightedNote}{}
 		Here you will have all your TODOs grouped with anchor links to the parts of the document where they are. Really handy if you do not know where to continue with your project.
 	\end{HighlightedNote}
+	
+	\AddListOfTodos
 
 \end{document}

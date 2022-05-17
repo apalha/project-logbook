@@ -68,7 +68,31 @@
 
 % % =============== Listings ============
 \RequirePackage{listings} % Main package for inserting code
-%\RequirePackage[scaled]{beramono} % For using the beramono font
+
+% listlinebgrd needs this workaround because listings changed some internal workings
+% see https://tex.stackexchange.com/questions/451532/recent-issues-with-lstlinebgrd-package-with-listings-after-the-latters-updates
+\makeatletter
+\let\old@lstKV@SwitchCases\lstKV@SwitchCases
+\def\lstKV@SwitchCases#1#2#3{}
+\makeatother
+
+\RequirePackage{lstlinebgrd}
+
+\makeatletter
+\let\lstKV@SwitchCases\old@lstKV@SwitchCases
+
+\lst@Key{numbers}{none}{%
+    \def\lst@PlaceNumber{\lst@linebgrd}%
+    \lstKV@SwitchCases{#1}%
+    {none:\\%
+     left:\def\lst@PlaceNumber{\llap{\normalfont
+                \lst@numberstyle{\thelstnumber}\kern\lst@numbersep}\lst@linebgrd}\\%
+     right:\def\lst@PlaceNumber{\rlap{\normalfont
+                \kern\linewidth \kern\lst@numbersep
+                \lst@numberstyle{\thelstnumber}}\lst@linebgrd}%
+    }{\PackageError{Listings}{Numbers #1 unknown}\@ehc}}
+\makeatother
+
 
 % % =============== Algorithms ===============
 \RequirePackage{algorithm} % Allows for algorithm description
@@ -229,8 +253,8 @@
 % Note that no key is required to create the maintainer (as is needed for a contributor) because the
 % maintainer will automatically be assigned the key maintainer.
 % Usage:
-%	\CreateMaintainer{name}{id}{institution}
-\NewDocumentCommand{\CreateMaintainer}{mmm}{
+%	\SetMaintainer{name}{id}{institution}
+\NewDocumentCommand{\SetMaintainer}{mmm}{
 	\edef\MaintainerName{#1}
 	\edef\Maintainerid{#2}
 	\edef\MaintainerInstitution{#3}
@@ -238,7 +262,7 @@
 }
 
 % Start with the default author, the user needs to change it
-\CreateMaintainer{John Doe}{JD}{Institute of Magnificent Research}
+\SetMaintainer{John Doe}{JD}{Institute of Magnificent Research}
 
 
 %% ========================================================================
@@ -385,7 +409,7 @@
 
 
 % Creates the front page. Adds the logo, title, subtitle, maintainer info, contributors info, and summary to the 
-% cover page
+% cover page and then add the table of contents right after it
 % Usage:
 %	\MakeFrontPage
 \NewDocumentCommand{\MakeFrontPage}{}{
@@ -397,12 +421,29 @@
 	\AddMaintainer
 	\newline
 	\AddContributorsList
+	\tableofcontents  % also add the table of contents
 }
 
 
 %% Section formating
 % Add a new page for every new section
 \newcommand{\sectionbreak}{\clearpage}
+
+
+%% Add TODO list
+% todolist appears as a section, therefore forces a page break, this command temporarily removes the page break at sections
+% adds the todolist and then adds again the page break at sections
+\newcommand{\AddListOfTodos}{
+	\renewcommand{\sectionbreak}{}
+	\listoftodos
+	\renewcommand{\sectionbreak}{\clearpage}
+}
+
+
+%% Referencing commands
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
 
 %%%%%%%%%%%%
 % CAPTIONS %
@@ -458,15 +499,11 @@
 \newcommand{\Break}{\State \textbf{break} }
 \newcommand{\Yield}{\State \textbf{yield} }
 
-% Go to
-\algnewcommand{\algorithmicgoto}{\textbf{go to}}%
-\algnewcommand{\Goto}{\algorithmicgoto\xspace}%
-\algnewcommand{\Label}{\State\unskip}
-
 
 %%%%%%%%%%%%
 % LISTINGS %
 %%%%%%%%%%%%
+
 
 % Captioning
 \AtBeginDocument{\numberwithin{lstlisting}{section}}  % Number listings within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
@@ -542,17 +579,6 @@
          {-}{{\char45}}1
          {^}{{\char94}}1
     % http://www.monperrus.net/martin/copy-pastable-ascii-characters-with-pdftex-pdflatex
-}
-
-% VHDL
-\lstdefinestyle{customvhdl}{
-    language=vhdl,                              % Language
-    morekeywords = {},
-    morestring=[b][\color{numbers}]',
-    morestring=[b][\color{numbers}]",
-    emph={std_logic,std_logic_vector,integer,unsigned,to_unsigned},
-    emphstyle={\color{keywords2}\bfseries},%
-    %deletekeywords={...},            % if you want to delete keywords from the given language
 }
 
 % Code highlight
@@ -636,8 +662,8 @@
 
 %% ========================================================================
 %% TODO commands
-\newcommand{\hightodo}[3]{\todo[inline,backgroundcolor=red!90!yellow!40!white]{\textbf{#1}, \textbf{#2}: #3}}
-\newcommand{\lowtodo}[3]{\todo[inline,backgroundcolor=blue!20!white]{\textbf{#1}, \textbf{#2}: #3}}
+\newcommand{\hightodo}[3]{\todo[inline,backgroundcolor=red!90!yellow!40!white]{\textbf{#1}, \textbf{\Contributorid{#2}}: #3}}
+\newcommand{\lowtodo}[3]{\todo[inline,backgroundcolor=blue!20!white]{\textbf{#1}, \textbf{\Contributorid{#2}}: #3}}
 
 
 
