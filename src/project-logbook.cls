@@ -66,6 +66,46 @@
 \RequirePackage{colortbl} % Color cells
 %\usepackage{longtable} % Tables than span multipages
 
+% % =============== Bibliography ============
+\RequirePackage[backend=bibtex8, abbreviate=false, isbn=false, url=false, doi=false, maxbibnames=99]{biblatex}
+
+% Changes to  make bibliography style like elsevier's elsarticle
+\renewcommand*{\multinamedelim}{\addcomma\space}
+\renewcommand*{\finalnamedelim}{\addcomma\space}
+
+\renewcommand*{\newunitpunct}{\addcomma\space}
+
+\DeclareFieldFormat*{title}{#1}
+\DeclareFieldFormat{journaltitle}{#1}
+
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{%
+  }{%
+    \printtext{\bibstring{in}\intitlepunct}%
+  }%
+}
+
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit*{\addnbspace}%
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+\renewcommand*{\bibpagespunct}{\addspace}
+
+\DeclareFieldFormat{pages}{#1}
+
+\renewbibmacro*{publisher+location+date}{%
+  \printlist{publisher}%
+  \setunit*{\addcomma\space}%
+  \printlist{location}%
+  \setunit*{\addcomma\space}%
+  \usebibmacro{date}%
+  \newunit}
+  
+
 % % =============== Listings ============
 \RequirePackage{listings} % Main package for inserting code
 
