@@ -18,7 +18,7 @@
 \RequirePackage{lmodern}
 \RequirePackage{xparse}  % Required for advanced commands
 \RequirePackage{titlesec}  % Fancy sections
-\RequirePackage{xcolor}
+\RequirePackage[dvipsnames]{xcolor}
 \RequirePackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
 %\RequirePackage[utf8]{inputenc} % For Spanish characters
 \RequirePackage[USenglish]{babel} % USEnglish localisation
@@ -29,7 +29,7 @@
 \RequirePackage{fancyhdr} % Allows for nice header and footer
 %\RequirePackage{sectsty} % Allows customizing section commands
 \RequirePackage{appendix} % Enables appendices
-\RequirePackage{enumerate} % Custom numerate, useful for i,ii,iii... I,II,III...
+%\RequirePackage{enumerate} % Custom numerate, useful for i,ii,iii... I,II,III...
 %\RequirePackage{hyperref} % For hyperlinks in the PDF
 \RequirePackage[colorlinks = true,
             linkcolor = red,
@@ -67,7 +67,7 @@
 %\usepackage{longtable} % Tables than span multipages
 
 % % =============== Bibliography ============
-\RequirePackage[backend=bibtex8, abbreviate=false, isbn=false, url=false, doi=false, maxbibnames=99]{biblatex}
+\RequirePackage[backend=bibtex8, abbreviate=false, isbn=false, url=false, doi=false, maxbibnames=99, citestyle=numeric-comp, sorting=nyt, defernumbers=true]{biblatex}
 
 % Changes to  make bibliography style like elsevier's elsarticle
 \renewcommand*{\multinamedelim}{\addcomma\space}
@@ -168,7 +168,7 @@
 \setlist[description]{leftmargin=1.cm,labelindent=0.0cm}
 
 % Set the bullet size
-\renewcommand\labelitemi{\large$\bullet$}
+\renewcommand\labelitemi{\small$\bullet$}
 
 
 %% ========================================================================
@@ -484,6 +484,7 @@
 \newcommand{\secref}[1]{Section~\ref{#1}}
 \newcommand{\figref}[1]{Figure~\ref{#1}}
 \newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\lstref}[1]{Listing~\ref{#1}}
 
 %%%%%%%%%%%%
 % CAPTIONS %
@@ -591,6 +592,41 @@
     tabsize=2,                       % sets default tabsize to 2 spaces
 }
 
+% MATLAB
+\definecolor{matlabGreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{matlabLilas}{RGB}{170,55,241}
+
+\lstdefinestyle{Matlab}{%
+    %basicstyle=\color{red},
+    language=Matlab,
+    aboveskip=3mm,
+    belowskip=3mm,
+    numbers=left,
+    numbersep=8pt,
+    numberstyle=\small\ttfamily\color{gray},
+    commentstyle=\color{matlabGreen},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    tabsize=4,
+    showspaces=false,
+    showtabs=false,
+    breaklines=true,%
+    showstringspaces=false,
+    breakatwhitespace=true,
+    basicstyle=\ttfamily,
+    keywordstyle=\color{blue},%
+    stringstyle=\color{matlabLilas},
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    emph=[1]{for,end,break},emphstyle=[1]\color{red} %some words to emphasise
+    %%% Put standard MATLAB functions not included in the default
+    %%% language here
+    morekeywords={xlim,ylim,var,alpha,factorial,poissrnd,normpdf,normcdf},
+    %
+    %%% Put MATLAB function parameters here
+    morekeywords=[2]{on, off, interp, ...},
+}
+
+
 % PYTHON
 \definecolor{pgreen}{rgb}{0,0.5,0}
 \lstdefinestyle{Python}{
@@ -601,7 +637,6 @@
     numbersep=8pt,
     numberstyle=\small\ttfamily\color{gray},
     basicstyle={\small\ttfamily},
-    commentstyle=\color{gray},
     showstringspaces=false,
     tabsize=4,
     showspaces=false,
@@ -706,6 +741,10 @@
 \newcommand{\lowtodo}[3]{\todo[inline,backgroundcolor=blue!20!white]{\textbf{#1}, \textbf{\Contributorid{#2}}: #3}}
 
 
+% Set something to done
+\newcommand{\isdone}[1]{%
+	{\color{Green} #1}	
+}
 
 
 % Thick strike out

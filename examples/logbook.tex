@@ -4,7 +4,7 @@
 % You can add the maintainer and the contributors in the preamble of the document
 
 % This is how you add the maintainer (there is only one) the maintainer is automatically a contributor, the format is
-% name, id (to appear in short messages), the affiliation. 
+% name, id (to appear in short messages), the affiliation.
 \SetMaintainer{Maya Toitovna}{mtoitovna}{Mars Center for Outstanding Developments}
 
 % This is how you add a contributor, you can have as many contributors as you like (althought
@@ -55,14 +55,14 @@
 %  Body of the document
 %----------------------------------------------------------------------------------------
 
-% The document is separated into sections, which in turn can be subdivided into subsections 
-\section{Overview} \label{sec:introduction}
+% The document is separated into sections, which in turn can be subdivided into subsections
+\section{Overview} \label{sec:overview}
 	% Sections start in a new page, for this reason sections contain clearly disjoint parts of the document
 	This document shows an example of how to use the \texttt{project-logbook} \LaTeX~class. This class is based upon the \texttt{article} class and may be used together with other packages for additional functionality. This class implements functionality for simplifying writing project/research logbooks and unifying its layout. We will  go over the different functionalities to display how to use them.
-	
+
 	\subsection{Preamble}
 		In the preamble of the document you may set several parameters of this document.
-		
+
 		\subsubsection{Maintainer and contributors}
 			Everyone who contributes to this document, should be added as a contributor. In this way it is know who contributed and we can also use this to identify who added some elements. Adding a contributor is done with \texttt{\textbackslash CreateContributor\string{<key>\string}\string{<name>\string}\string{<id>\string}\string{<affiliation>\string}}, where
 			\begin{description}
@@ -71,35 +71,35 @@
 				\item[\texttt{<id>}] is the abbreviation of the contributor name, to display when associating the contributor to a note (see below) or a meeting minutes box (see below).
 				\item[\texttt{<affiliation>}] is the affiliation of the contributor, mainly to display on the front page.
     			\end{description}
-			
+
 			This document is maintained by a unique maintainer, which is automatically defined as a contributor with key \texttt{maintainer}. The maintainer can be set in the preamble with  \texttt{\textbackslash SetMaintainer\string{<name>\string}\string{<id>\string}\string{<affiliation>\string}}. The meaning of the different input parameters is identical to what was seen above for the contributor.
-			
+
 			The maintainer name, id, and affiliation can be accessed via the commands \texttt{\textbackslash MaintainerName}, \texttt{\textbackslash Maintainerid} and \texttt{\textbackslash MaintainerInsitution}, which for this case gives: \MaintainerName~(name), \Maintainerid~(id), and \MaintainerInstitution~(affiliation).
-			
-			In a similar way, a contributor can be accessed via the commands \texttt{\textbackslash ContributorName\string{<key>\string}}, \texttt{\textbackslash Contributorid\string{<key>\string}}, and \texttt{\textbackslash ContributorInstitution\string{<key>\string}}, which for this case gives (for key \texttt{chalmers}):  \ContributorName{chalmers}~(name), \Contributorid{chalmers}~(id), and \ContributorInstitution{chalmers}~(affiliation). 
-			
+
+			In a similar way, a contributor can be accessed via the commands \texttt{\textbackslash ContributorName\string{<key>\string}}, \texttt{\textbackslash Contributorid\string{<key>\string}}, and \texttt{\textbackslash ContributorInstitution\string{<key>\string}}, which for this case gives (for key \texttt{chalmers}):  \ContributorName{chalmers}~(name), \Contributorid{chalmers}~(id), and \ContributorInstitution{chalmers}~(affiliation).
+
 		\subsubsection{Project title, subtitle, and header name}
 			The project title (which appears in the center of the front page) can be set in the preamble of the document with \texttt{\textbackslash SetProjectTitle\string{<title>\string}}, where \texttt{<title>} is the title we wish to set.
-			
+
 			Below the project title we can have a project subtitle, which can also be set in the preamble of the document with \texttt{\textbackslash SetProjectSubtitle\string{<subtitle>\string}}, where \texttt{<subtitle>} is the subtitle we wish to set.
-			
+
 		\subsubsection{Maintainer institution logo}
 			On the top right corner of the front page you can add the logo of the institution of the maintainer. This can be done in the preamble with the command \texttt{\textbackslash SetInstitutionLogo\string{<path\_to\_file>\string}}, where \texttt{<path\_to\_file>} is the path to a .pdf or .png file. If you do not want to show a logo, use a white figure.
-			
+
 	\subsection{Body}
 		The front page is generated with the command \texttt{\textbackslash MakeFrontPage}. This automatically adds the table of contents on the second page of the document, with direct links to the sections, for quick access.
-		
+
 		One important section is the Meetings section, which is subdivided into External and Internal. The External subsection contains the minutes of the meetings with external partners and the Internal sections contains the internal meetings associated to the institution of the Maintainer. Any contributor (including the maintainer) can be an author of Meeting minutes.
-		
+
 		Following the Meetings section, any number of sections can be added focussing on specific topics. The goal of these is to discuss the current state of the development of a particular part of the project. More discussed below.
-		
+
 		Following these sections, there is an Appendix, containing the list of references (papers to use as reference later when writing a paper), a list of resources such as a link to a video presentation, a tutorial, or something else that is less formal than a reference. In the end, you have a list of TODOs that have been defined in the document. They appear in the order in which they appeared in the document, not by writing date.
-		
+
 
 \section{Meetings}
 	\subsection{External}
 		% We can add meeting minutes for each meeting, by using the MeetingMinutes environment
-		% We just need to specify the date yyyy-mm-dd and the id of the creator of the meeting minutes. 
+		% We just need to specify the date yyyy-mm-dd and the id of the creator of the meeting minutes.
 		% This id must be either maintainer (for the maintainer) or the id of any of the other contributors.
 		\begin{MeetingMinutes}{2022-05-15}{ann}
 			This is what happened in the meeting.
@@ -108,51 +108,57 @@
 			\end{equation}
 			\lipsum[4]
 		\end{MeetingMinutes}
-	
+
 		\begin{MeetingMinutes}{2022-05-11}{arkadybogdanov}
 			We discussed that the \texttt{MeetingMinutes} environment produces alternating background colours for easier visualisation.
 			\begin{equation}
 				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x
 			\end{equation}
-			
+
 			\lipsum[3]
-			
+
 			We can anything inside meeting minutes, including (high priority) todo notes inside the minutes on the same day (or any other day), see \secref{sub:preprocessing} for more details.
-			
+
 			\hightodo{2022-05-10}{chalmers}{Compute the error between mode-downsampled segmentation state vectors at 1000 Hz and state vectors computed at 400 Hz. This needs to be performed to check that the segmentation algorithm is not overfitted to 1000Hz. If error is significant, retrain segmentation at 400 Hz or use 1000 just for segmentation (if Matlab 2022a improvements are true there should be no problem)}
-			
+
 			or a (low priority) todo note by another contributor, for example
-		
+
 			\lowtodo{2022-05-12}{ann}{Do not forget to first check this less important aspect.}
 		\end{MeetingMinutes}
-	
+
 		% Meeting minutes alternate in color for easier visual separation. Any LaTeX content can be added inside
 		% the MeetingMinutes environment
 		\begin{MeetingMinutes}{2022-05-10}{chalmers}
 			This time, these meeting minutes, were written by the contributor \ContributorName{chalmers}, as can be seen by the id \emph{\Contributorid{chalmers}}~on the header of the box.
-		
+
 			During this meeting the following points have been addressed
 			\begin{itemize}
 				\item This first very important point.
 				\item Followed by this second also important point.
 				\item This other less important point was also discussed at the end.
 			\end{itemize}
-			
+
 			For this meeting this equation was important
 			\begin{equation}
 				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x\,.
 			\end{equation}
 			\lipsum[2]
-			
+
 			\begin{HighlightedNote}{}
 				Meeting minutes boxes can extend over to the next page (or more) if needed.
 			\end{HighlightedNote}
+
+			We can also list some things to do and highlight the ones already done, as they are done:
+			\begin{itemize}
+				\item \isdone{First task is done.}
+				\item Second task still needs to be done.
+			\end{itemize}
 		\end{MeetingMinutes}
-	
-	
+
+
 		\begin{MeetingMinutes}{2022-05-09}{maintainer}
 			This first meeting's minutes were added by \MaintainerName~(the maintainer of this project logbook), as can be seen by the id \emph{\Maintainerid}~on the header of the box.
-		
+
 			In this first meeting the following equation was discussed
 			\begin{equation}
 				\int_{\Omega}{\varphi(x)}\,\mathrm{d}x\,.
@@ -172,23 +178,23 @@
 
 \section{Topic A to focus on} \label{sec:topic_A}
 	We can use sections organize the text into different parts  such that specific topics are addressed in their own section.
-	
+
 	\begin{HighlightedNote}{}
 		Sections always start at the top of a new page in order to generate clearly separated parts of the document. In this first section (Overview) one should introduce what this project is about, in a high level so you can do a simple explanation of the topic and the research challenges, who is involved, etc.
-		
+
 		Since this information is important, we have added it within a \texttt{HighlightedNote} environment. This is the version without a title.
 	\end{HighlightedNote}
-	
+
 	\begin{HighlightedNote}{You can add multiple things inside a \texttt{HighlightedNote}}
 		And this is the version with a title. You can use the title for example if you want to clearly state what is is, or if you want to make a larger note and give an idea of what it is about.
-		
+
 		You can add equations to clarify your ideas
 		\begin{equation}
 			e^{i\pi} + 1 = 0
 		\end{equation}
-		
+
 		Some tables
-		
+
 		\begin{center}
 			\begin{tabular}{ccccc}
             			{}  & \multicolumn{1}{c}{$A$} & \multicolumn{1}{c}{$N$} & \multicolumn{1}{c}{$S$} & \multicolumn{1}{c}{$A/S$} \\
@@ -203,22 +209,22 @@
         			\end{tabular}
     		\end{center}
 		and other elements.
-    
+
 	\end{HighlightedNote}
-	
+
 	\begin{HighlightedNote}{With a fancy title}
 		The \texttt{HighlightedNotes} environment that generates these fancy boxes, can be used with a title \texttt{\textbackslash begin\string{HighlightedNotes\string}\string{the\_title\_text\string}}, as in this case, or without a title \texttt{\textbackslash begin\string{HighlightedNotes\string}\string{\string}}, as in the previous case.
 	\end{HighlightedNote}
-	
+
 	\subsection{A subsection}
 		You can subdivide your section in a finer level using \texttt{\textbackslash subsection}.
-		
+
 		\subsubsection{A subsubsection}
 			The subsections can be subdivided with \texttt{\textbackslash subsubsection}.
-			
+
 			\subsubsubsection{A subsubsubsection}
 				And an additional level was added to subdivide subsubsections named \texttt{\textbackslash subsubsubsection}. This should give more than enough subdivision levels to your text for fine grained organisation.
-	
+
 				\begin{HighlightedNote}{}
 					In most Machine Learning research projects you will be using some kind of samples from a Dataset to learn a model. Thus it is extremely important that you carefully describe the dataset and why you believe is a good dataset for the project and what type of preprocessing are you going to apply.
 				\end{HighlightedNote}
@@ -261,7 +267,7 @@
 								\end{tabular}
 								\caption{Validation Set}
 						\end{subtable}
-    
+
     						\caption{Population properties $A \equiv$ Abnormal, $N\equiv$ Normal, $S\equiv A+N$}
     						\label{tab:populations}
 				\end{table}
@@ -323,7 +329,7 @@
 	\subsection{Code} \label{sub:code}
 		\begin{HighlightedNote}{}
 			If the algorithm is too vague and you feel like you need the source code you can also insert it. You can put LaTeX code inside by using \texttt{<@ @>} delimiters, highlight small pieces of the code with \texttt{<| |>} delimiters, and highlight full lines (see the source code). For now only Python colored syntax highlighting is available, but most languages are supported and the color scheme can be added. More information available here \url{https://www.overleaf.com/learn/latex/Code_listing}.
-			
+
 			Note that these pieces of code in the \LaTeX~document must start with no indent.
 		\end{HighlightedNote}
 
@@ -377,10 +383,10 @@ def DTW_distance(s1, s2):
 				\begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
 					\foreach \m/\l [count=\y] in {1,2,3,4,missing,5}
   						\node [every neuron/.try, neuron \m/.try] (input-\m) at (0,2.5-\y) {};
-					
+
 					\foreach \m [count=\y] in {1,2,missing,3}
   						\node [every neuron/.try, neuron \m/.try ] (hidden-\m) at (2,2-\y*1.25) {};
-					
+
 					\foreach \m [count=\y] in {1,2,missing,3}
   						\node [every neuron/.try, neuron \m/.try ] (output-\m) at (4,1.5-\y) {};
 
@@ -419,7 +425,7 @@ def DTW_distance(s1, s2):
     			\caption{Gate Recurrent Unit in a Long Short Term Memory Neural Netwok (GRU-LSTM). \\ \emph{Credit to \url{https://colah.github.io/posts/2015-08-Understanding-LSTMs/}}}
     			\label{fig:LSTM}
 		\end{figure}
-		
+
 
 \section{Topic C to focus on} \label{sec:topic_c}
 	\subsection{Figures} \label{sub:figures}
@@ -441,9 +447,9 @@ def DTW_distance(s1, s2):
         						\includegraphics[width=\textwidth]{figures/sfem_1D_p5.pdf}
         						\caption{One-dimensional spectral element basis functions of polynomial degree $p = 5$ for the subspace $G_{5} \subset H^{1}(\Omega)$, $\Omega\in\mathbb{R}$.}
     				\end{subfigure}
-				
+
 				\vspace{1cm}
-    				
+
 				\begin{subfigure}{0.48\textwidth}
         					\centering
         						\includegraphics[width=\textwidth]{figures/sfem_p3.png}
@@ -455,7 +461,7 @@ def DTW_distance(s1, s2):
         						\includegraphics[width=\textwidth]{figures/sfem_p5.png}
         						\caption{Two-dimensional spectral element basis functions of polynomial degree $p = 5$ for the subspace $G_{5} \subset H^{1}(\Omega)$, $\Omega\in\mathbb{R}^{2}$.}
     				\end{subfigure}
-				
+
    				\vspace{.25cm}
     				\caption{Example basis functions for the spectral finite element method in 1D and 2D.}
     				\label{fig:plots}
@@ -510,12 +516,12 @@ def DTW_distance(s1, s2):
 	\begin{HighlightedNote}{}
 		Do not forget to cite the papers that you are using in your research, this way your work will be infinitely easier to write down and to review when the time comes.
 	\end{HighlightedNote}
-	
-	% Add the bibliography without the header. You can remove the heading=none and \section{References} to have it in a different way. 
+
+	% Add the bibliography without the header. You can remove the heading=none and \section{References} to have it in a different way.
 	% Here we keep the references as a section from the Appendix, as an example
 	\printbibliography[heading=none]
-	
-	
+
+
 \section{Resources}
 	\begin{HighlightedNote}{}
 		It is a good idea to record sources that explain concepts or provide tools so the research is both better documented and if someone has to continue it there is enough supporting documentation.
@@ -524,7 +530,7 @@ def DTW_distance(s1, s2):
     		\item Quick read in DTW and Keogh Lower Bounding. \newline
 			\url{http://alexminnaar.com/time-series-classification-and-clustering-with-python.html} \newline
 			\url{http://nbviewer.jupyter.org/github/alexminnaar/time-series-classification-and-clustering/blob/master/Time%20Series%20Classification%20and%20Clustering.ipynb}
-    		
+
 		\item Parallelizing DTW -- Good article on making a parallel version of DTW. Uses Keogh lower bound not as a linear approximation but as a pruning device. \newline
 			\url{https://www.andrew.cmu.edu/user/mmohta/15418Project/finalreport.html}
 
@@ -545,7 +551,7 @@ def DTW_distance(s1, s2):
 	\begin{HighlightedNote}{}
 		Here you will have all your TODOs grouped with anchor links to the parts of the document where they are. Really handy if you do not know where to continue with your project.
 	\end{HighlightedNote}
-	
+
 	\AddListOfTodos
 
 \end{document}
